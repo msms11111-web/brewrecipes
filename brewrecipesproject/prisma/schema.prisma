@@ -1,17 +1,21 @@
 // This is your Prisma schema file for Brew Recipes
 // Learn more about it in the docs: https://pris.ly/d/prisma-schema
 //
-// SQLite is used so the project runs with zero configuration.
-// SQLite has no native array type, so tasting_notes and steps are
-// stored as JSON strings — lib/recipes.ts handles (de)serialization.
+// PostgreSQL (Supabase) is used for production/deployment.
+// tasting_notes and steps are stored as JSON strings (text) —
+// lib/recipes.ts handles (de)serialization on both SQLite and Postgres.
+//
+// DATABASE_URL = pooled connection (Supabase, port 6543) used by the app.
+// DIRECT_URL   = direct connection (Supabase, port 5432) used for migrations/seed.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
