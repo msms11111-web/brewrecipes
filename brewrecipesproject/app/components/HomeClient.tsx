@@ -49,8 +49,9 @@ export default function HomeClient({ featuredRecipes, categories, totalRecipes }
   return (
     <div className="overflow-hidden">
       {/* Hero Section */}
-      <section className="relative min-h-[100dvh] flex items-center justify-center bg-[#1C1C1C] text-white pt-16">
-        <div className="absolute inset-0 bg-[radial-gradient(#3D2F25_0.8px,transparent_1px)] bg-[length:5px_5px] opacity-40" />
+      <section className="relative min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-[#2A1A10] via-[#3D2A1A] to-[#1F140C] text-white pt-16">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(197,164,110,0.18),transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(#5A3E2B_0.8px,transparent_1px)] bg-[length:5px_5px] opacity-30" />
 
         <div className="relative max-w-5xl mx-auto px-6 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md mb-6 text-sm">
@@ -58,11 +59,15 @@ export default function HomeClient({ featuredRecipes, categories, totalRecipes }
             <span>{totalRecipes} وصفة احترافية بانتظارك</span>
           </div>
 
-          <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-6">
-            {t('heroTitle')}
+          <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight leading-[0.9] mb-4 bg-gradient-to-b from-[#F5D99A] via-[#D4AF37] to-[#B8862B] bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(197,164,110,0.35)]">
+            Brew Recipes
           </h1>
 
-          <p className="max-w-2xl mx-auto text-xl md:text-2xl text-[#E9D8C3]/90 mb-10 tracking-tight">
+          <p className="text-xl md:text-3xl font-semibold text-[#E9D8C3] mb-6 tracking-tight">
+            {t('heroTitle')}
+          </p>
+
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-[#E9D8C3]/80 mb-10 tracking-tight">
             {t('heroSubtitle')}
           </p>
 
