@@ -2,7 +2,8 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-// tasting_notes و steps تُخزَّن كنص JSON لأن SQLite لا يدعم المصفوفات
+// tasting_notes و steps تُخزَّن كنص JSON.
+// لا تُوضع صور افتراضية — يرفع المالك كل الصور من لوحة التحكم (مكتبة الصور).
 const recipes = [
   {
     title: "V60 - إثيوبيا يرغاتشيف",
@@ -26,7 +27,6 @@ const recipes = [
       "حرك بلطف في النهاية واتركها تستقر.",
       "الوقت الإجمالي يجب أن يكون حوالي ٣ دقائق."
     ],
-    image_url: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80",
     price: 45,
   },
   {
@@ -50,7 +50,6 @@ const recipes = [
       "اضغط بقوة ١٥-٢٠ كجم.",
       "استخرج لمدة ٢٥-٣٠ ثانية حتى يصل الوزن إلى ٣٦ جرام."
     ],
-    image_url: "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=1200&q=80",
     price: 39,
   },
   {
@@ -74,7 +73,6 @@ const recipes = [
       "حرك جيداً واتركه في الثلاجة لمدة ١٢-١٨ ساعة.",
       "صفِّ القهوة واستمتع."
     ],
-    image_url: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=1200&q=80",
     price: 35,
   },
   {
@@ -98,7 +96,6 @@ const recipes = [
       "صب الماء المتبقي بحركات دائرية على ٣ دفعات.",
       "يجب أن يكتمل الاستخلاص خلال ٤-٥ دقائق."
     ],
-    image_url: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
     price: 42,
   },
   {
@@ -122,7 +119,6 @@ const recipes = [
       "صب حتى ١٥٠ مل ثم انتظر حتى ينخفض مستوى الماء.",
       "أكمل الصب حتى ٢٦٠ مل وانتظر اكتمال التصفية."
     ],
-    image_url: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=80",
     price: 48,
   },
   {
@@ -146,7 +142,6 @@ const recipes = [
       "صب على دفعات صغيرة متساوية (٦٠-٧٠ مل) كل ٣٠ ثانية.",
       "حافظ على مستوى ماء منخفض وثابت حتى ٣٢٠ مل."
     ],
-    image_url: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1200&q=80",
     price: 44,
   },
 ]

@@ -15,7 +15,7 @@ export interface Recipe {
   brew_time: number;
   steps: string[];
   video_url?: string | null;
-  image_url: string;
+  image_url?: string | null;
   price: number;
   is_active?: boolean;
   rating?: number | null;
@@ -28,6 +28,18 @@ export interface User {
   email: string;
   image?: string;
   role: 'user' | 'admin';
+}
+
+export interface MediaAsset {
+  id: string;
+  filename: string;
+  mimeType: string;
+  size: number;
+  width?: number | null;
+  height?: number | null;
+  alt?: string | null;
+  url: string;
+  createdAt: string;
 }
 
 export interface Review {

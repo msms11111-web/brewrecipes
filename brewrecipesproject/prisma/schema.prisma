@@ -90,7 +90,10 @@ model Recipe {
   brew_time      Int      // in seconds
   steps          String   // JSON array of strings
   video_url      String?
-  image_url      String
+  // Nullable on purpose: no default/placeholder images ship in code.
+  // The admin uploads every image via the Media Library; a recipe with no
+  // image renders an in-app CSS placeholder, never a stock photo.
+  image_url      String?
   price          Float
   is_active      Boolean  @default(true)
   createdAt      DateTime @default(now())
@@ -99,6 +102,22 @@ model Recipe {
   reviews   Review[]
   favorites Favorite[]
   orders    OrderItem[]
+}
+
+// Media Library — every coffee image is uploaded by the admin from their
+// device and stored here as binary (bytea). Served through /api/media/[id].
+// Self-contained: works locally and on Vercel with no external object store.
+model Media {
+  id        String   @id @default(cuid())
+  filename  String
+  mimeType  String
+  size      Int
+  width     Int?
+  height    Int?
+  alt       String?
+  data      Bytes
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Order {

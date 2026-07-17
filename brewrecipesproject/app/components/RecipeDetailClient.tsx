@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Recipe } from '@/app/types';
+import RecipeImage from './RecipeImage';
 
 function formatBrewTime(seconds: number): string {
   if (seconds >= 3600) return `${Math.round(seconds / 3600)} ساعة`;
@@ -84,7 +85,7 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
         {/* Image + Info */}
         <div className="lg:col-span-3">
           <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[16/10] mb-8">
-            <img src={recipe.image_url} alt={recipe.title} className="w-full h-full object-cover" />
+            <RecipeImage src={recipe.image_url} alt={recipe.title} />
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70" />
 
             <div className="absolute bottom-0 p-8 text-white">

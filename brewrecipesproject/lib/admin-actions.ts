@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from './prisma'
+import { requireAdmin } from './auth'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -55,9 +56,9 @@ function recipeDataFromForm(formData: FormData) {
     brew_time: Math.round(num('brew_time', 180)),
     steps: linesToJson((formData.get('steps') as string) || ''),
     tasting_notes: commaToJson((formData.get('tasting_notes') as string) || ''),
-    image_url:
-      ((formData.get('image_url') as string) || '').trim() ||
-      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80',
+    // No default image — the admin assigns one from the Media Library, or the
+    // recipe stays imageless and renders the in-app placeholder.
+    image_url: ((formData.get('image_url') as string) || '').trim() || null,
     video_url: ((formData.get('video_url') as string) || '').trim() || null,
   }
 }
@@ -71,6 +72,7 @@ function revalidateRecipePages(slug?: string) {
 }
 
 export async function createRecipe(formData: FormData) {
+  await requireAdmin()
   const data = recipeDataFromForm(formData)
   if (!data.title || !data.slug) {
     throw new Error('اسم الوصفة مطلوب')
@@ -82,6 +84,7 @@ export async function createRecipe(formData: FormData) {
 }
 
 export async function updateRecipe(id: string, formData: FormData) {
+  await requireAdmin()
   const data = recipeDataFromForm(formData)
   if (!data.title || !data.slug) {
     throw new Error('اسم الوصفة مطلوب')
@@ -93,6 +96,7 @@ export async function updateRecipe(id: string, formData: FormData) {
 }
 
 export async function deleteRecipe(formData: FormData) {
+  await requireAdmin()
   const id = formData.get('id') as string
   if (!id) return
 
@@ -104,5 +108,15 @@ export async function deleteRecipe(formData: FormData) {
     prisma.recipe.delete({ where: { id } }),
   ])
 
+  revalidateRecipePages()
+}
+
+export async function toggleRecipeActive(formData: FormData) {
+  await requireAdmin()
+  const id = formData.get('id') as string
+  if (!id) return
+  const current = await prisma.recipe.findUnique({ where: { id }, select: { is_active: true } })
+  if (!current) return
+  await prisma.recipe.update({ where: { id }, data: { is_active: !current.is_active } })
   revalidateRecipePages()
 }

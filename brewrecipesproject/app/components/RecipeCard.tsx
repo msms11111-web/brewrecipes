@@ -5,6 +5,7 @@ import { Heart, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppStore, useHydrated } from '@/lib/app-store';
 import type { Recipe } from '@/app/types';
+import RecipeImage from './RecipeImage';
 
 export default function RecipeCard({ recipe }: { recipe: Recipe }) {
   const hydrated = useHydrated();
@@ -22,10 +23,10 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
     <Link href={`/recipe/${recipe.slug}`} className="group block h-full">
       <div className="recipe-card card rounded-3xl overflow-hidden h-full flex flex-col">
         <div className="relative h-56">
-          <img
+          <RecipeImage
             src={recipe.image_url}
             alt={recipe.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            className="group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute top-4 right-4 px-3.5 py-1 text-xs font-semibold bg-white/95 dark:bg-black/70 rounded-full tracking-wider">
             {recipe.coffee_type}

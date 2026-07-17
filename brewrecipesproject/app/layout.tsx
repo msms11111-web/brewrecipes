@@ -4,8 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { LanguageProvider } from "./components/LanguageProvider";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import SiteFrame from "./components/SiteFrame";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,14 +49,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <LanguageProvider>
-            <div className="min-h-screen flex flex-col">
-              <Navbar />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-            </div>
-            <Toaster 
+            <SiteFrame>{children}</SiteFrame>
+            <Toaster
               position="top-center" 
               richColors 
               closeButton 

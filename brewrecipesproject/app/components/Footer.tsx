@@ -41,6 +41,7 @@ export default function Footer() {
               <a href="#" className="block hover:text-[#C5A46E] transition-colors">سياسة الخصوصية</a>
               <a href="#" className="block hover:text-[#C5A46E] transition-colors">شروط الاستخدام</a>
               <a href="#" className="block hover:text-[#C5A46E] transition-colors">اتصل بنا</a>
+              <Link href="/admin" className="block hover:text-[#C5A46E] transition-colors">لوحة تحكم المدير</Link>
             </div>
           </div>
 

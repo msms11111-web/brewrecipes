@@ -24,11 +24,11 @@ export default async function EditRecipePage({
   const updateAction = updateRecipe.bind(null, id);
 
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10">
-      <Link href="/admin" className="text-sm mb-6 inline-block hover:text-[#C5A46E]">→ العودة للوحة التحكم</Link>
+    <div className="max-w-4xl mx-auto px-6 py-8 lg:py-10">
+      <Link href="/admin/recipes" className="text-sm mb-6 inline-block opacity-70 hover:text-[var(--accent)]">→ العودة إلى الوصفات</Link>
 
-      <h1 className="text-4xl tracking-tighter font-bold mb-2">تعديل الوصفة</h1>
-      <p className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mb-8">{recipe.title}</p>
+      <h1 className="text-3xl lg:text-4xl font-bold tracking-tight mb-2">تعديل الوصفة</h1>
+      <p className="opacity-60 mb-8">{recipe.title}</p>
 
       <RecipeForm action={updateAction} recipe={recipe} submitLabel="حفظ التعديلات" />
     </div>
