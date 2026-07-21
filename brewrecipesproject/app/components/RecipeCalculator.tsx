@@ -20,11 +20,11 @@ export default function RecipeCalculator({
   const calculatedTime = Math.round((initialBrewTime / initialCoffeeGrams) * coffeeGrams);
 
   return (
-    <div className="calculator p-7 rounded-3xl border border-[#E9D8C3] dark:border-[#3D2F25]">
+    <div className="calculator p-7 rounded-3xl border border-[var(--border)]">
       <div className="flex items-center gap-2 mb-2">
         <h3 className="font-bold tracking-tight">حاسبة الوصفة الذكية</h3>
       </div>
-      <p className="text-xs text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mb-6">
+      <p className="text-xs text-[var(--muted-foreground)] mb-6">
         غيّر كمية البن وسيتم تحديث كمية الماء والوقت تلقائياً
       </p>
 
@@ -40,34 +40,34 @@ export default function RecipeCalculator({
           step="1"
           value={coffeeGrams} 
           onChange={(e) => setCoffeeGrams(parseInt(e.target.value))}
-          className="w-full accent-[#5A3E2B] dark:accent-[#C5A46E]"
+          className="w-full accent-[var(--accent)]"
         />
-        <div className="flex justify-between text-[10px] text-[#5A3E2B]/50 mt-1">
+        <div className="flex justify-between text-[10px] text-[var(--foreground)]/50 mt-1">
           <span>8g</span>
           <span>35g</span>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white dark:bg-[#1C1C1C] rounded-2xl p-5 text-center border border-[#E9D8C3] dark:border-[#3D2F25]">
-          <div className="text-[#C5A46E] text-xs tracking-widest mb-1">الماء</div>
-          <div className="text-4xl font-bold tabular-nums tracking-tighter text-[#5A3E2B] dark:text-white">
+        <div className="bg-[var(--card)] rounded-2xl p-5 text-center border border-[var(--border)]">
+          <div className="text-[var(--accent)] text-xs tracking-widest mb-1">الماء</div>
+          <div className="text-4xl font-bold tabular-nums tracking-tighter text-[var(--foreground)]">
             {calculatedWater}
           </div>
-          <div className="text-xs text-[#5A3E2B]/60">مل</div>
+          <div className="text-xs text-[var(--muted-foreground)]">مل</div>
         </div>
         
-        <div className="bg-white dark:bg-[#1C1C1C] rounded-2xl p-5 text-center border border-[#E9D8C3] dark:border-[#3D2F25]">
-          <div className="text-[#C5A46E] text-xs tracking-widest mb-1">وقت الاستخلاص</div>
-          <div className="text-4xl font-bold tabular-nums tracking-tighter text-[#5A3E2B] dark:text-white">
+        <div className="bg-[var(--card)] rounded-2xl p-5 text-center border border-[var(--border)]">
+          <div className="text-[var(--accent)] text-xs tracking-widest mb-1">وقت الاستخلاص</div>
+          <div className="text-4xl font-bold tabular-nums tracking-tighter text-[var(--foreground)]">
             {calculatedTime}
           </div>
-          <div className="text-xs text-[#5A3E2B]/60">ثانية</div>
+          <div className="text-xs text-[var(--muted-foreground)]">ثانية</div>
         </div>
       </div>
 
       <div className="mt-6 text-center">
-        <p className="text-xs text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60">
+        <p className="text-xs text-[var(--muted-foreground)]">
           النسبة الأصلية: 1 : {waterRatio.toFixed(1)}
         </p>
       </div>

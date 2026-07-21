@@ -77,7 +77,7 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
 
   return (
     <div className="max-w-5xl mx-auto px-6 py-10">
-      <Link href="/store" className="inline-flex items-center gap-2 text-sm mb-8 hover:text-[#C5A46E] transition-colors">
+      <Link href="/store" className="inline-flex items-center gap-2 text-sm mb-8 hover:text-[var(--accent)] transition-colors">
         <ArrowRight className="w-4 h-4" /> العودة إلى المتجر
       </Link>
 
@@ -89,7 +89,7 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
             <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70" />
 
             <div className="absolute bottom-0 p-8 text-white">
-              <div className="uppercase tracking-[4px] text-xs mb-2 text-[#C5A46E]">{recipe.coffee_type} • {recipe.roast_level}</div>
+              <div className="uppercase tracking-[4px] text-xs mb-2 text-[var(--accent)]">{recipe.coffee_type} • {recipe.roast_level}</div>
               <h1 className="text-5xl md:text-6xl font-bold tracking-tighter mb-3">{recipe.title}</h1>
               <p className="text-xl text-white/90">{recipe.roastery} — {recipe.origin_country}</p>
             </div>
@@ -106,10 +106,10 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
 
           {/* Tasting Notes */}
           <div className="mb-10">
-            <div className="uppercase text-xs tracking-[3px] text-[#C5A46E] mb-3 font-semibold">{t('tastingNotes')}</div>
+            <div className="uppercase text-xs tracking-[3px] text-[var(--accent)] mb-3 font-semibold">{t('tastingNotes')}</div>
             <div className="flex flex-wrap gap-2">
               {recipe.tasting_notes.map((note, index) => (
-                <div key={index} className="px-5 py-2 rounded-2xl bg-[#E9D8C3] dark:bg-[#3D2F25] text-sm font-medium">
+                <div key={index} className="px-5 py-2 rounded-2xl bg-[var(--secondary)] text-sm font-medium">
                   {note}
                 </div>
               ))}
@@ -117,7 +117,7 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
           </div>
 
           {/* Description */}
-          <div className="prose prose-lg dark:prose-invert max-w-none text-[#5A3E2B] dark:text-[#E9D8C3]">
+          <div className="prose prose-lg dark:prose-invert max-w-none text-[var(--foreground)]">
             <p className="text-lg leading-relaxed">{recipe.description}</p>
           </div>
         </div>
@@ -128,21 +128,21 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
           <div className="card p-7 rounded-3xl">
             <div className="flex justify-between items-start mb-6">
               <div>
-                <div className="text-6xl font-bold tracking-tighter text-[#5A3E2B] dark:text-[#C5A46E]">{recipe.price}</div>
-                <div className="text-sm -mt-1 text-[#5A3E2B]/60">ر.س (شراء مرة واحدة)</div>
+                <div className="text-6xl font-bold tracking-tighter text-[var(--foreground)]">{recipe.price}</div>
+                <div className="text-sm -mt-1 text-[var(--muted-foreground)]">ر.س (شراء مرة واحدة)</div>
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={handleFavorite}
                   aria-label={favorited ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}
-                  className="p-3 rounded-2xl border border-[#E9D8C3] dark:border-[#3D2F25] hover:bg-[#F8F4EE] dark:hover:bg-[#1C1C1C]"
+                  className="p-3 rounded-2xl border border-[var(--border)] hover:bg-[var(--secondary)]"
                 >
                   <Heart className={`w-5 h-5 ${favorited ? 'fill-red-500 text-red-500' : ''}`} />
                 </button>
                 <button
                   onClick={handleShare}
                   aria-label="مشاركة"
-                  className="p-3 rounded-2xl border border-[#E9D8C3] dark:border-[#3D2F25] hover:bg-[#F8F4EE] dark:hover:bg-[#1C1C1C]"
+                  className="p-3 rounded-2xl border border-[var(--border)] hover:bg-[var(--secondary)]"
                 >
                   <Share2 className="w-5 h-5" />
                 </button>
@@ -163,7 +163,7 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
               أو اشترك شهرياً (٢٩ ر.س) للوصول الكامل
             </Link>
 
-            <div className="text-center text-xs text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60 mt-4">
+            <div className="text-center text-xs text-[var(--muted-foreground)] mt-4">
               وصول فوري • حاسبة ذكية • تحديثات مستمرة
             </div>
           </div>
@@ -179,19 +179,19 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
                 [t('roastLevel'), recipe.roast_level],
                 [t('grindSize'), recipe.grind_size],
               ].map(([label, value]) => (
-                <div key={label} className="flex justify-between py-2 border-b border-[#E9D8C3] dark:border-[#3D2F25]">
-                  <span className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70">{label}</span>
+                <div key={label} className="flex justify-between py-2 border-b border-[var(--border)]">
+                  <span className="text-[var(--muted-foreground)]">{label}</span>
                   <span className="font-medium">{value}</span>
                 </div>
               ))}
-              <div className="flex justify-between py-2 border-b border-[#E9D8C3] dark:border-[#3D2F25]">
-                <span className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 flex items-center gap-1.5">
+              <div className="flex justify-between py-2 border-b border-[var(--border)]">
+                <span className="text-[var(--muted-foreground)] flex items-center gap-1.5">
                   <ThermometerSun className="w-4 h-4" /> {t('temperature')}
                 </span>
                 <span className="font-medium">{recipe.temperature}°م</span>
               </div>
               <div className="flex justify-between py-2">
-                <span className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 flex items-center gap-1.5">
+                <span className="text-[var(--muted-foreground)] flex items-center gap-1.5">
                   <Clock className="w-4 h-4" /> {t('brewTime')}
                 </span>
                 <span className="font-medium">{formatBrewTime(recipe.brew_time)}</span>
@@ -208,9 +208,9 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
 
           {recipe.rating != null && (
             <div className="card p-6 rounded-3xl flex items-center justify-center gap-3">
-              <Star className="w-6 h-6 fill-[#C5A46E] text-[#C5A46E]" />
+              <Star className="w-6 h-6 fill-[var(--accent)] text-[var(--accent)]" />
               <span className="text-2xl font-bold">{recipe.rating}</span>
-              <span className="text-sm text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60">({recipe.reviewsCount} تقييم)</span>
+              <span className="text-sm text-[var(--muted-foreground)]">({recipe.reviewsCount} تقييم)</span>
             </div>
           )}
         </div>
@@ -220,16 +220,16 @@ export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
       <div className="mt-16">
         <h2 className="text-4xl tracking-tighter font-bold mb-8 flex items-center gap-3">
           {t('steps')}
-          <span className="text-base align-middle px-4 py-1 rounded-full bg-[#E9D8C3] dark:bg-[#3D2F25] text-[#5A3E2B] dark:text-[#C5A46E] font-mono tracking-widest text-xs">STEP BY STEP</span>
+          <span className="text-base align-middle px-4 py-1 rounded-full bg-[var(--secondary)] text-[var(--foreground)] font-mono tracking-widest text-xs">STEP BY STEP</span>
         </h2>
 
         <div className="space-y-4 max-w-3xl">
           {recipe.steps.map((step, index) => (
-            <div key={index} className="flex gap-5 bg-white dark:bg-[#2A2520] p-6 rounded-3xl border border-[#E9D8C3] dark:border-[#3D2F25]">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#5A3E2B] dark:bg-[#C5A46E] text-white dark:text-[#1C1C1C] flex items-center justify-center text-sm font-bold">
+            <div key={index} className="flex gap-5 bg-[var(--card)] p-6 rounded-3xl border border-[var(--border)]">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] flex items-center justify-center text-sm font-bold">
                 {index + 1}
               </div>
-              <p className="pt-1 text-lg leading-relaxed text-[#5A3E2B] dark:text-[#E9D8C3]">{step}</p>
+              <p className="pt-1 text-lg leading-relaxed text-[var(--foreground)]">{step}</p>
             </div>
           ))}
         </div>

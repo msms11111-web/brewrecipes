@@ -16,9 +16,9 @@ function decodeSlug(slug: string): string {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const recipe = await getRecipeBySlug(decodeSlug(slug));
-  if (!recipe) return { title: 'وصفة غير موجودة | Brew Recipes' };
+  if (!recipe) return { title: 'وصفة غير موجودة | قَطرَة' };
   return {
-    title: `${recipe.title} | Brew Recipes`,
+    title: `${recipe.title} | قَطرَة`,
     description: recipe.description,
   };
 }

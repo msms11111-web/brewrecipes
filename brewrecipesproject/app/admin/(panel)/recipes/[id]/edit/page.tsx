@@ -8,7 +8,7 @@ import RecipeForm from '@/app/components/RecipeForm';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'تعديل الوصفة | Brew Recipes',
+  title: 'تعديل الوصفة | قَطرَة',
 };
 
 export default async function EditRecipePage({

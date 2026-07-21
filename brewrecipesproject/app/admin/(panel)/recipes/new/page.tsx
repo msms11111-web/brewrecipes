@@ -3,7 +3,7 @@ import RecipeForm from '@/app/components/RecipeForm';
 import { createRecipe } from '@/lib/admin-actions';
 
 export const metadata = {
-  title: 'إضافة وصفة جديدة | Brew Recipes',
+  title: 'إضافة وصفة جديدة | قَطرَة',
 };
 
 export default function NewRecipePage() {

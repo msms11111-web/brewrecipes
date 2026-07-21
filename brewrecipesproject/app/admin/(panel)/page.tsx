@@ -6,7 +6,7 @@ import { Plus, Coffee, Images, TrendingUp, AlertCircle, ArrowLeft } from 'lucide
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'لوحة التحكم | Brew Recipes',
+  title: 'لوحة التحكم | قَطرَة',
 };
 
 export default async function AdminDashboard() {
@@ -30,7 +30,7 @@ export default async function AdminDashboard() {
       <header className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">لوحة التحكم</h1>
-          <p className="opacity-60 mt-1">إدارة كاملة لوصفات وصور Brew Recipes</p>
+          <p className="opacity-60 mt-1">إدارة كاملة لوصفات وصور قَطرَة</p>
         </div>
         <div className="flex gap-3">
           <Link href="/admin/media" className="btn btn-secondary px-5 py-3"><Images className="w-4 h-4" /> مكتبة الصور</Link>

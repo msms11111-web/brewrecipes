@@ -25,9 +25,9 @@ export default function FavoritesPage() {
   return (
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="mb-10">
-        <div className="text-[#C5A46E] text-xs tracking-[3px] font-semibold">YOUR COLLECTION</div>
-        <h1 className="text-6xl tracking-tighter font-bold text-[#5A3E2B] dark:text-white">المفضلة</h1>
-        <p className="text-lg text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mt-2">الوصفات التي أضفتها إلى قائمتك المفضلة</p>
+        <div className="text-[var(--accent)] text-xs tracking-[3px] font-semibold">YOUR COLLECTION</div>
+        <h1 className="text-6xl tracking-tighter font-bold text-[var(--foreground)]">المفضلة</h1>
+        <p className="text-lg text-[var(--muted-foreground)] mt-2">الوصفات التي أضفتها إلى قائمتك المفضلة</p>
       </div>
 
       {loading ? (
@@ -44,11 +44,11 @@ export default function FavoritesPage() {
         </div>
       ) : (
         <div className="text-center py-24">
-          <div className="mx-auto w-20 h-20 rounded-full bg-[#E9D8C3] dark:bg-[#3D2F25] flex items-center justify-center mb-6">
-            <Heart className="w-9 h-9 text-[#5A3E2B] dark:text-[#C5A46E]" />
+          <div className="mx-auto w-20 h-20 rounded-full bg-[var(--secondary)] flex items-center justify-center mb-6">
+            <Heart className="w-9 h-9 text-[var(--foreground)]" />
           </div>
           <h2 className="text-2xl font-bold mb-2">قائمتك المفضلة فارغة</h2>
-          <p className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mb-8">
+          <p className="text-[var(--muted-foreground)] mb-8">
             اضغط على أيقونة القلب في أي وصفة لإضافتها هنا
           </p>
           <Link href="/store" className="btn btn-gold px-10 py-3.5">تصفح المتجر</Link>
