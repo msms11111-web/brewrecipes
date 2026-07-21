@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Sans_Arabic } from "next/font/google";
+import { Tajawal, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { LanguageProvider } from "./components/LanguageProvider";
 import SiteFrame from "./components/SiteFrame";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  weight: ["400", "500", "600", "700"],
+const tajawal = Tajawal({
+  subsets: ["arabic", "latin"],
+  variable: "--font-heading",
+  weight: ["700", "800", "900"],
   display: "swap",
 });
 
-const notoArabic = Noto_Sans_Arabic({
+const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
   variable: "--font-arabic",
   weight: ["400", "500", "600", "700"],
@@ -22,14 +22,14 @@ const notoArabic = Noto_Sans_Arabic({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
-  title: "Brew Recipes | وصفات القهوة المختصة الفاخرة",
-  description: "متجر رقمي فاخر لبيع وصفات القهوة المختصة. اشترِ وصفات V60 و Espresso و Chemex و Cold Brew. اشتراك شهري للوصول إلى كل الوصفات مع حاسبة ذكية وفيديوهات احترافية.",
+  title: "قَطرَة | دليل التقطير اليدوي",
+  description: "وصفات دقيقة للقهوة المقطرة — V60، كيميكس، وكاليتا ويف — بأوزان وحرارة وتوقيت مضبوط لكل صبة، لكوب متوازن في كل مرة.",
   icons: {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "Brew Recipes - وصفات القهوة المختصة",
-    description: "اكتشف أسرار القهوة المختصة مع أفضل الوصفات من أشهر المحامص العالمية.",
+    title: "قَطرَة - دليل التقطير اليدوي",
+    description: "وصفات دقيقة للقهوة المقطرة بأوزان وحرارة وتوقيت مضبوط لكل صبة.",
     images: [{ url: "/og-image.jpg" }],
   },
 };
@@ -41,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" suppressHydrationWarning>
-      <body className={`${inter.variable} ${notoArabic.variable} font-sans antialiased bg-[#F8F4EE] dark:bg-[#1C1C1C]`}>
+      <body className={`${tajawal.variable} ${plexArabic.variable} font-sans antialiased bg-[var(--background)]`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

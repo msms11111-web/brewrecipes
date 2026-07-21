@@ -1,53 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  /* Coffee Luxury Theme - Light Mode */
-  --color-brown: #4A3121;
-  --color-beige: #E7D6BF;
-  --color-cream: #FAF6F0;
-  --color-black: #1A1410;
-  --color-gold: #C09A54;
+  /* قَطرَة — Drip Coffee Theme (Light) */
+  --background: oklch(97% 0.015 70);
+  --foreground: oklch(22% 0.02 50);
+  --card: oklch(99% 0.008 70);
+  --card-foreground: oklch(22% 0.02 50);
+  --primary: oklch(22% 0.02 50);
+  --primary-foreground: oklch(99% 0.005 70);
+  --secondary: oklch(93% 0.015 65);
+  --accent: oklch(58% 0.14 45);
+  --accent-soft: oklch(70% 0.1 60);
+  --muted: oklch(93% 0.015 65);
+  --muted-foreground: oklch(42% 0.02 50);
+  --border: oklch(88% 0.015 60);
+  --input: oklch(99% 0.008 70);
+  --ring: oklch(58% 0.14 45);
 
-  --background: #FAF6F0;
-  --foreground: #2A1E15;
-  --card: #FFFFFF;
-  --card-foreground: #2A1E15;
-  --primary: #4A3121;
-  --primary-foreground: #FAF6F0;
-  --secondary: #EFE4D3;
-  --accent: #B8893E;
-  --accent-soft: #D9BE8A;
-  --muted: #F0E7D9;
-  --border: #E4D6C2;
-  --input: #FFFFFF;
-  --ring: #B8893E;
+  /* dark panels used inside light pages (hero / featured recipe) */
+  --panel-dark: oklch(20% 0.02 50);
+  --panel-dark-soft: oklch(26% 0.02 50);
+  --panel-dark-foreground: oklch(96% 0.01 70);
+  --panel-dark-muted: oklch(80% 0.015 70);
 
   --radius: 18px;
-  --shadow-luxe: 0 24px 60px -20px rgba(74, 49, 33, 0.22);
-  --font-arabic: 'Noto Sans Arabic', system-ui, -apple-system, sans-serif;
+  --shadow-luxe: 0 24px 60px -20px oklch(22% 0.02 50 / 0.22);
 }
 
 .dark {
-  /* Coffee Luxury Theme - Dark Mode */
-  --background: #17110C;
-  --foreground: #F3E9DA;
-  --card: #241A12;
-  --card-foreground: #F3E9DA;
-  --primary: #C09A54;
-  --primary-foreground: #17110C;
-  --secondary: #33271C;
-  --accent: #D2AC63;
-  --accent-soft: #8A6C3E;
-  --muted: #2C2119;
-  --border: #3A2C1F;
-  --input: #241A12;
-  --ring: #D2AC63;
+  /* قَطرَة — Drip Coffee Theme (Dark) */
+  --background: oklch(18% 0.02 50);
+  --foreground: oklch(94% 0.01 70);
+  --card: oklch(23% 0.02 50);
+  --card-foreground: oklch(94% 0.01 70);
+  --primary: oklch(62% 0.14 45);
+  --primary-foreground: oklch(18% 0.02 50);
+  --secondary: oklch(28% 0.02 50);
+  --accent: oklch(62% 0.14 45);
+  --accent-soft: oklch(50% 0.1 55);
+  --muted: oklch(26% 0.02 50);
+  --muted-foreground: oklch(75% 0.015 70);
+  --border: oklch(32% 0.02 50);
+  --input: oklch(23% 0.02 50);
+  --ring: oklch(62% 0.14 45);
+
+  --panel-dark: oklch(14% 0.02 50);
+  --panel-dark-soft: oklch(22% 0.02 50);
+  --panel-dark-foreground: oklch(96% 0.01 70);
+  --panel-dark-muted: oklch(80% 0.015 70);
+
   --shadow-luxe: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
 }
 
 /* Premium Typography & RTL Support */
 body {
-  font-family: var(--font-arabic);
+  font-family: var(--font-arabic), 'IBM Plex Sans Arabic', system-ui, -apple-system, sans-serif;
   background-color: var(--background);
   color: var(--foreground);
   transition: background-color 0.3s ease, color 0.3s ease;
@@ -56,13 +63,49 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-weight: 700;
-  letter-spacing: -0.025em;
+  font-family: var(--font-heading), 'Tajawal', sans-serif;
+  font-weight: 800;
+  letter-spacing: normal;
+}
+
+.font-heading {
+  font-family: var(--font-heading), 'Tajawal', sans-serif;
+}
+
+/* قَطرَة — drip animations */
+@keyframes dripFall {
+  0% { transform: translateY(-8px); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(680px); opacity: 0; }
+}
+
+@keyframes dripFallShort {
+  0% { transform: translateY(-8px); opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateY(220px); opacity: 0; }
+}
+
+.drip-line {
+  background: repeating-linear-gradient(
+    to bottom,
+    oklch(70% 0.1 60 / 0.5) 0 6px,
+    transparent 6px 14px
+  );
+}
+
+.img-placeholder {
+  background: repeating-linear-gradient(
+    115deg,
+    oklch(88% 0.02 60) 0 14px,
+    oklch(93% 0.015 65) 14px 28px
+  );
 }
 
 /* Luxury helpers */
 .text-gold-gradient {
-  background: linear-gradient(120deg, #F0D79A 0%, #C9A253 45%, #A87B32 100%);
+  background: linear-gradient(120deg, oklch(75% 0.12 55) 0%, oklch(58% 0.14 45) 45%, oklch(48% 0.12 45) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -70,8 +113,8 @@ h1, h2, h3, h4 {
 
 .hero-coffee {
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(197, 164, 110, 0.18), transparent 55%),
-    linear-gradient(160deg, #2A1A10 0%, #3D2A1A 45%, #1F140C 100%);
+    radial-gradient(ellipse at 50% 0%, oklch(70% 0.1 60 / 0.14), transparent 55%),
+    linear-gradient(160deg, oklch(24% 0.025 50) 0%, oklch(20% 0.02 50) 45%, oklch(16% 0.02 50) 100%);
 }
 
 .divider-gold {
@@ -135,14 +178,14 @@ h1, h2, h3, h4 {
   }
 
   .btn-gold {
-    background: linear-gradient(135deg, #D9BE8A 0%, #B8893E 55%, #9A6E30 100%);
-    color: #241A12;
+    background: var(--accent);
+    color: oklch(99% 0.005 70);
     border: none;
   }
 
   .btn-gold:hover {
     transform: translateY(-2px);
-    box-shadow: 0 14px 26px -8px rgb(184 137 62 / 0.5);
+    box-shadow: 0 14px 26px -8px oklch(58% 0.14 45 / 0.5);
   }
 
   /* Form Inputs */
