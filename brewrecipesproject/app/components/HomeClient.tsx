@@ -30,7 +30,7 @@ function RecipeImage({ recipe, className }: { recipe: Recipe; className?: string
   }
   return (
     <div className={`img-placeholder w-full h-full flex items-center justify-center ${className ?? ''}`}>
-      <span className="font-mono text-[11px] text-[oklch(45%_0.02_55)] text-center p-2.5">[{recipe.title}]</span>
+      <span className="font-mono text-[11px] text-[oklch(90%_0.02_95)] text-center p-2.5">[{recipe.title}]</span>
     </div>
   );
 }
@@ -61,14 +61,14 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
           className="absolute inset-0 z-0 pointer-events-none"
           style={{
             background:
-              'radial-gradient(ellipse at 20% 30%, oklch(35% 0.06 50 / 0.55), transparent 60%), radial-gradient(ellipse at 85% 75%, oklch(30% 0.05 55 / 0.45), transparent 55%)',
+              'radial-gradient(ellipse at 20% 30%, oklch(32% 0.055 155 / 0.55), transparent 60%), radial-gradient(ellipse at 85% 75%, oklch(28% 0.05 148 / 0.45), transparent 55%)',
           }}
         />
         <div
           className="absolute inset-0 z-[1] pointer-events-none"
           style={{
             background:
-              'linear-gradient(to left, oklch(20% 0.02 50 / 0.96) 30%, oklch(20% 0.02 50 / 0.72) 60%, oklch(20% 0.02 50 / 0.35) 100%)',
+              'linear-gradient(to left, oklch(16% 0.035 160 / 0.96) 30%, oklch(16% 0.035 160 / 0.72) 60%, oklch(16% 0.035 160 / 0.35) 100%)',
           }}
         />
 
@@ -84,7 +84,7 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
 
         <div className="relative z-[3] max-w-6xl mx-auto md:grid md:grid-cols-[1.1fr_0.9fr] md:gap-10 md:items-center">
           <div className="ps-8 md:ps-16">
-            <span className="inline-block text-[13px] tracking-wide text-[var(--accent)] font-bold mb-4 border border-[oklch(60%_0.02_70_/_0.4)] px-3.5 py-1.5 rounded-full">
+            <span className="inline-block text-[13px] tracking-wide text-[var(--accent)] font-bold mb-4 border border-[oklch(70%_0.06_90_/_0.4)] px-3.5 py-1.5 rounded-full">
               القهوة المقطرة يدويًا
             </span>
             <h1 className="font-heading font-black text-4xl md:text-[58px] leading-[1.15] mb-5">
@@ -92,7 +92,7 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
               <br />
               كل قطرة نكهة
             </h1>
-            <p className="text-base md:text-lg leading-[1.9] text-[oklch(85%_0.015_70)] max-w-[480px] mb-8">
+            <p className="text-base md:text-lg leading-[1.9] text-[oklch(88%_0.015_95)] max-w-[480px] mb-8">
               وصفات دقيقة للقهوة المقطرة — V60، كيميكس، وكاليتا ويف — بأوزان وحرارة وتوقيت مضبوط لكل صبة، لكوب متوازن في كل مرة.
             </p>
             <div className="flex flex-wrap gap-4 items-center">
@@ -104,7 +104,7 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
               </a>
               <a
                 href="#guide"
-                className="text-[oklch(92%_0.01_70)] no-underline font-semibold text-[15px] border-b border-[oklch(60%_0.02_70_/_0.5)] pb-0.5 hover:text-[var(--accent)] transition-colors"
+                className="text-[oklch(93%_0.01_95)] no-underline font-semibold text-[15px] border-b border-[oklch(70%_0.06_90_/_0.5)] pb-0.5 hover:text-[var(--accent)] transition-colors"
               >
                 تعلّم أساسيات القطر
               </a>
@@ -112,15 +112,15 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
             <div className="flex flex-wrap gap-8 md:gap-10 mt-12 md:mt-14">
               <div>
                 <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">92–96°</div>
-                <div className="text-[13px] text-[oklch(75%_0.015_70)]">درجة حرارة الماء المثالية</div>
+                <div className="text-[13px] text-[oklch(78%_0.02_100)]">درجة حرارة الماء المثالية</div>
               </div>
               <div>
                 <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">1:16</div>
-                <div className="text-[13px] text-[oklch(75%_0.015_70)]">نسبة القهوة إلى الماء</div>
+                <div className="text-[13px] text-[oklch(78%_0.02_100)]">نسبة القهوة إلى الماء</div>
               </div>
               <div>
                 <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">3 دقائق</div>
-                <div className="text-[13px] text-[oklch(75%_0.015_70)]">متوسط زمن التقطير</div>
+                <div className="text-[13px] text-[oklch(78%_0.02_100)]">متوسط زمن التقطير</div>
               </div>
             </div>
           </div>
@@ -264,22 +264,22 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
             <div>
               <span className="text-[var(--accent)] font-bold text-[13px]">وصفة مُفصّلة</span>
               <h2 className="font-heading font-black text-3xl md:text-[38px] mt-2.5 mb-5">{activeRecipe.title}</h2>
-              <p className="text-[15.5px] leading-[1.9] text-[oklch(82%_0.015_70)] mb-7">{activeRecipe.description}</p>
+              <p className="text-[15.5px] leading-[1.9] text-[oklch(85%_0.015_100)] mb-7">{activeRecipe.description}</p>
               <div className="grid grid-cols-2 gap-4 mb-7">
                 <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(70%_0.015_70)]">القهوة</div>
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">القهوة</div>
                   <div className="font-heading font-extrabold text-[19px]">{activeRecipe.coffee_grams}غ</div>
                 </div>
                 <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(70%_0.015_70)]">الماء</div>
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">الماء</div>
                   <div className="font-heading font-extrabold text-[19px]">{activeRecipe.water_ml}مل</div>
                 </div>
                 <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(70%_0.015_70)]">الحرارة</div>
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">الحرارة</div>
                   <div className="font-heading font-extrabold text-[19px]">{activeRecipe.temperature}°م</div>
                 </div>
                 <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(70%_0.015_70)]">الطحن</div>
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">الطحن</div>
                   <div className="font-heading font-extrabold text-[19px]">{activeRecipe.grind_size}</div>
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientPr
                   <div className="flex items-baseline gap-3 mb-1.5">
                     <h4 className="font-heading font-extrabold text-lg m-0">الخطوة {i + 1}</h4>
                   </div>
-                  <p className="text-[14.5px] leading-[1.8] text-[oklch(80%_0.015_70)] m-0">{step}</p>
+                  <p className="text-[14.5px] leading-[1.8] text-[oklch(83%_0.015_100)] m-0">{step}</p>
                 </div>
               ))}
             </div>

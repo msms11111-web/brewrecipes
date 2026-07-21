@@ -1,55 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  /* قَطرَة — Drip Coffee Theme (Light) */
-  --background: oklch(97% 0.015 70);
-  --foreground: oklch(22% 0.02 50);
-  --card: oklch(99% 0.008 70);
-  --card-foreground: oklch(22% 0.02 50);
-  --primary: oklch(22% 0.02 50);
-  --primary-foreground: oklch(99% 0.005 70);
-  --secondary: oklch(93% 0.015 65);
-  --accent: oklch(58% 0.14 45);
+  /* قَطرَة — Dark Green & Gold Theme (Default) */
+  --background: oklch(23% 0.045 160);
+  --foreground: oklch(95% 0.015 95);
+  --card: oklch(30% 0.05 85);
+  --card-foreground: oklch(96% 0.015 95);
+  --primary: oklch(72% 0.11 85);
+  --primary-foreground: oklch(20% 0.04 160);
+  --secondary: oklch(29% 0.04 150);
+  --accent: oklch(62% 0.14 45);
   --accent-soft: oklch(70% 0.1 60);
-  --muted: oklch(93% 0.015 65);
-  --muted-foreground: oklch(42% 0.02 50);
-  --border: oklch(88% 0.015 60);
-  --input: oklch(99% 0.008 70);
-  --ring: oklch(58% 0.14 45);
+  --muted: oklch(28% 0.04 155);
+  --muted-foreground: oklch(78% 0.02 110);
+  --border: oklch(37% 0.045 110);
+  --input: oklch(28% 0.045 150);
+  --ring: oklch(62% 0.14 45);
 
-  /* dark panels used inside light pages (hero / featured recipe) */
-  --panel-dark: oklch(20% 0.02 50);
-  --panel-dark-soft: oklch(26% 0.02 50);
-  --panel-dark-foreground: oklch(96% 0.01 70);
-  --panel-dark-muted: oklch(80% 0.015 70);
+  /* deep panels (hero / featured recipe) */
+  --panel-dark: oklch(16% 0.035 160);
+  --panel-dark-soft: oklch(22% 0.04 155);
+  --panel-dark-foreground: oklch(96% 0.01 90);
+  --panel-dark-muted: oklch(80% 0.015 100);
 
   --radius: 18px;
-  --shadow-luxe: 0 24px 60px -20px oklch(22% 0.02 50 / 0.22);
+  --shadow-luxe: 0 24px 60px -20px rgba(0, 0, 0, 0.5);
 }
 
 .dark {
-  /* قَطرَة — Drip Coffee Theme (Dark) */
-  --background: oklch(18% 0.02 50);
-  --foreground: oklch(94% 0.01 70);
-  --card: oklch(23% 0.02 50);
-  --card-foreground: oklch(94% 0.01 70);
-  --primary: oklch(62% 0.14 45);
-  --primary-foreground: oklch(18% 0.02 50);
-  --secondary: oklch(28% 0.02 50);
-  --accent: oklch(62% 0.14 45);
-  --accent-soft: oklch(50% 0.1 55);
-  --muted: oklch(26% 0.02 50);
-  --muted-foreground: oklch(75% 0.015 70);
-  --border: oklch(32% 0.02 50);
-  --input: oklch(23% 0.02 50);
-  --ring: oklch(62% 0.14 45);
+  /* قَطرَة — Dark Green & Gold Theme (Night) */
+  --background: oklch(15% 0.035 160);
+  --foreground: oklch(94% 0.015 95);
+  --card: oklch(24% 0.045 85);
+  --card-foreground: oklch(95% 0.015 95);
+  --primary: oklch(74% 0.11 85);
+  --primary-foreground: oklch(16% 0.035 160);
+  --secondary: oklch(23% 0.035 150);
+  --accent: oklch(66% 0.14 48);
+  --accent-soft: oklch(52% 0.1 55);
+  --muted: oklch(21% 0.035 155);
+  --muted-foreground: oklch(75% 0.02 110);
+  --border: oklch(29% 0.04 110);
+  --input: oklch(21% 0.04 150);
+  --ring: oklch(66% 0.14 48);
 
-  --panel-dark: oklch(14% 0.02 50);
-  --panel-dark-soft: oklch(22% 0.02 50);
-  --panel-dark-foreground: oklch(96% 0.01 70);
-  --panel-dark-muted: oklch(80% 0.015 70);
+  --panel-dark: oklch(11% 0.03 160);
+  --panel-dark-soft: oklch(17% 0.035 155);
+  --panel-dark-foreground: oklch(96% 0.01 90);
+  --panel-dark-muted: oklch(80% 0.015 100);
 
-  --shadow-luxe: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+  --shadow-luxe: 0 24px 60px -20px rgba(0, 0, 0, 0.7);
 }
 
 /* Premium Typography & RTL Support */
@@ -98,8 +98,8 @@ h1, h2, h3, h4 {
 .img-placeholder {
   background: repeating-linear-gradient(
     115deg,
-    oklch(88% 0.02 60) 0 14px,
-    oklch(93% 0.015 65) 14px 28px
+    oklch(33% 0.05 88) 0 14px,
+    oklch(38% 0.055 85) 14px 28px
   );
 }
 
@@ -114,7 +114,7 @@ h1, h2, h3, h4 {
 .hero-coffee {
   background:
     radial-gradient(ellipse at 50% 0%, oklch(70% 0.1 60 / 0.14), transparent 55%),
-    linear-gradient(160deg, oklch(24% 0.025 50) 0%, oklch(20% 0.02 50) 45%, oklch(16% 0.02 50) 100%);
+    linear-gradient(160deg, oklch(22% 0.045 158) 0%, oklch(16% 0.035 160) 45%, oklch(13% 0.03 162) 100%);
 }
 
 .divider-gold {
