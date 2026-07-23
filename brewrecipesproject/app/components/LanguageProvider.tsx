@@ -69,7 +69,7 @@ const translations: Record<Language, Record<string, string>> = {
     password: "كلمة المرور",
     name: "الاسم الكامل",
     loginTitle: "مرحباً بعودتك",
-    registerTitle: "انضم إلى مجتمع Brew Recipes",
+    registerTitle: "انضم إلى مجتمع قَطرَة",
     
     // Admin
     dashboard: "لوحة التحكم",
@@ -130,7 +130,7 @@ const translations: Record<Language, Record<string, string>> = {
     password: "Password",
     name: "Full Name",
     loginTitle: "Welcome Back",
-    registerTitle: "Join the Brew Recipes Community",
+    registerTitle: "Join the Qatra Community",
     
     dashboard: "Dashboard",
     manageRecipes: "Manage Recipes",

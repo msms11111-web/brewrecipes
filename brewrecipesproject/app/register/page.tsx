@@ -38,8 +38,8 @@ export default function RegisterPage() {
     <div className="min-h-[80dvh] flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <h1 className="text-4xl tracking-tighter font-bold">انضم إلى Brew Recipes</h1>
-          <p className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mt-2">ابدأ رحلتك مع أفضل وصفات القهوة</p>
+          <h1 className="text-4xl tracking-tighter font-bold">انضم إلى قَطرَة</h1>
+          <p className="text-[var(--muted-foreground)] mt-2">ابدأ رحلتك مع أفضل وصفات القهوة</p>
         </div>
 
         <form onSubmit={handleRegister} className="card p-8 rounded-3xl space-y-6">
@@ -82,8 +82,8 @@ export default function RegisterPage() {
             إنشاء حساب
           </button>
 
-          <p className="text-center text-sm text-[#5A3E2B]/70">
-            لديك حساب بالفعل؟ <Link href="/login" className="text-[#C5A46E] hover:underline">سجل الدخول</Link>
+          <p className="text-center text-sm text-[var(--foreground)]/70">
+            لديك حساب بالفعل؟ <Link href="/login" className="text-[var(--accent)] hover:underline">سجل الدخول</Link>
           </p>
         </form>
       </div>

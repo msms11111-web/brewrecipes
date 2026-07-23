@@ -28,30 +28,30 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
             alt={recipe.title}
             className="group-hover:scale-105 transition-transform duration-700"
           />
-          <div className="absolute top-4 right-4 px-3.5 py-1 text-xs font-semibold bg-white/95 dark:bg-black/70 rounded-full tracking-wider">
+          <div className="absolute top-4 right-4 px-3.5 py-1 text-xs font-semibold bg-[oklch(16%_0.035_160_/_0.85)] rounded-full tracking-wider">
             {recipe.coffee_type}
           </div>
           <button
             onClick={handleFavorite}
             aria-label={favorited ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}
-            className="absolute top-4 left-4 p-2.5 rounded-full bg-white/95 dark:bg-black/70 hover:scale-110 transition-transform"
+            className="absolute top-4 left-4 p-2.5 rounded-full bg-[oklch(16%_0.035_160_/_0.85)] hover:scale-110 transition-transform"
           >
-            <Heart className={`w-4 h-4 ${favorited ? 'fill-red-500 text-red-500' : 'text-[#5A3E2B] dark:text-white'}`} />
+            <Heart className={`w-4 h-4 ${favorited ? 'fill-red-500 text-red-500' : 'text-[var(--foreground)]'}`} />
           </button>
         </div>
 
         <div className="p-6 flex-1 flex flex-col">
           <div className="flex-1">
             <h3 className="font-bold text-2xl tracking-tight mb-1">{recipe.title}</h3>
-            <p className="text-sm text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70">
+            <p className="text-sm text-[var(--muted-foreground)]">
               {recipe.roastery} • {recipe.origin_country}
             </p>
 
             {recipe.rating != null && (
               <div className="flex items-center gap-1.5 mt-2 text-sm">
-                <Star className="w-4 h-4 fill-[#C5A46E] text-[#C5A46E]" />
+                <Star className="w-4 h-4 fill-[var(--accent)] text-[var(--accent)]" />
                 <span>{recipe.rating}</span>
-                <span className="text-[#5A3E2B]/50 dark:text-[#E9D8C3]/50">({recipe.reviewsCount})</span>
+                <span className="text-[var(--muted-foreground)]">({recipe.reviewsCount})</span>
               </div>
             )}
 
@@ -59,7 +59,7 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
               {recipe.tasting_notes.slice(0, 3).map((note, i) => (
                 <span
                   key={i}
-                  className="text-[10px] px-3 py-0.5 rounded-full bg-[#E9D8C3] dark:bg-[#3D2F25] text-[#5A3E2B] dark:text-[#E9D8C3]"
+                  className="text-[10px] px-3 py-0.5 rounded-full bg-[var(--secondary)] text-[var(--foreground)]"
                 >
                   {note}
                 </span>
@@ -67,12 +67,12 @@ export default function RecipeCard({ recipe }: { recipe: Recipe }) {
             </div>
           </div>
 
-          <div className="flex items-center justify-between mt-auto pt-6 border-t border-[#E9D8C3] dark:border-[#3D2F25]">
+          <div className="flex items-center justify-between mt-auto pt-6 border-t border-[var(--border)]">
             <div>
-              <span className="text-3xl font-bold tracking-tighter text-[#5A3E2B] dark:text-[#C5A46E]">
+              <span className="text-3xl font-bold tracking-tighter text-[var(--foreground)]">
                 {recipe.price}
               </span>
-              <span className="text-xs text-[#5A3E2B]/60"> ر.س</span>
+              <span className="text-xs text-[var(--muted-foreground)]"> ر.س</span>
             </div>
             <div className="btn btn-primary text-sm px-6 py-2.5">عرض التفاصيل</div>
           </div>

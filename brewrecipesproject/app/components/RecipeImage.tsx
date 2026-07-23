@@ -27,12 +27,12 @@ export default function RecipeImage({
 
   return (
     <div
-      className={`w-full h-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-[#3D2A1A] via-[#2A1E15] to-[#1F140C] text-[#C5A46E] ${rounded}`}
+      className={`w-full h-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-[oklch(33%_0.05_88)] via-[oklch(27%_0.05_120)] to-[oklch(21%_0.04_155)] text-[var(--accent)] ${rounded}`}
       role="img"
       aria-label={alt}
     >
       <Coffee className="w-10 h-10 opacity-70" />
-      <span className="text-[11px] tracking-[2px] uppercase opacity-50">Brew Recipes</span>
+      <span className="text-[11px] tracking-[2px] uppercase opacity-50">قَطرَة</span>
     </div>
   );
 }

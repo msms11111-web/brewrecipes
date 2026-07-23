@@ -1,228 +1,328 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { useLanguage } from './LanguageProvider';
-import RecipeCard from './RecipeCard';
-import {
-  ArrowLeft, Star, Users, Award, Clock,
-  Coffee, Zap
-} from 'lucide-react';
 import type { Recipe } from '@/app/types';
 
-const categoryIcons: Record<string, typeof Coffee> = {
-  'Espresso': Zap,
-  'Cold Brew': Clock,
-};
-
-const testimonials = [
-  {
-    name: "خالد العتيبي",
-    role: "باريستا محترف - الرياض",
-    quote: "أفضل استثمار قمت به. الوصفات دقيقة جداً وتغيرت جودة قهوتي في المنزل بشكل ملحوظ.",
-    rating: 5
-  },
-  {
-    name: "سارة المنصور",
-    role: "عاشقة قهوة - جدة",
-    quote: "الاشتراك الشهري يستحق كل ريال. أجرب وصفات جديدة كل أسبوع وأتعلم تقنيات جديدة.",
-    rating: 5
-  },
-  {
-    name: "عبدالله الحربي",
-    role: "صاحب مقهى - الدمام",
-    quote: "استخدمت الوصفات في تدريب فريقي. النتائج ممتازة والعملاء لاحظوا الفرق.",
-    rating: 5
-  }
+const pillars = [
+  { letter: 'ط', title: 'الطحن', text: 'حجم حبيبات متجانس يحدد سرعة التصريف وتوازن النكهة في الكوب.' },
+  { letter: 'ح', title: 'الحرارة', text: 'بين 92 و96 درجة مئوية — أقل يعطي حموضة زائدة، وأعلى يعطي مرارة.' },
+  { letter: 'و', title: 'الوقت', text: 'ضبط زمن تصريف الماء يوازن بين الحلاوة والحموضة والمرارة.' },
 ];
+
+const dripDots = [0, 1, 2, 3, 4, 5].map((i) => ({ dur: 2.4 + (i % 3) * 0.4, delay: i * 0.7 }));
+const dripDotsShort = [0, 1, 2].map((i) => ({ dur: 1.8 + i * 0.3, delay: i * 0.9 }));
+
+const GALLERY_PAGE_SIZE = 8;
+
+function formatBrewTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return s === 0 ? `${m} دقائق` : `${m}:${s.toString().padStart(2, '0')} دقيقة`;
+}
+
+function RecipeImage({ recipe, className }: { recipe: Recipe; className?: string }) {
+  if (recipe.image_url) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={recipe.image_url} alt={recipe.title} className={`w-full h-full object-cover ${className ?? ''}`} />
+    );
+  }
+  return (
+    <div className={`img-placeholder w-full h-full flex items-center justify-center ${className ?? ''}`}>
+      <span className="font-mono text-[11px] text-[oklch(90%_0.02_95)] text-center p-2.5">[{recipe.title}]</span>
+    </div>
+  );
+}
 
 interface HomeClientProps {
   featuredRecipes: Recipe[];
-  categories: { name: string; count: number }[];
-  totalRecipes: number;
+  allRecipes: Recipe[];
 }
 
-export default function HomeClient({ featuredRecipes, categories, totalRecipes }: HomeClientProps) {
-  const { t } = useLanguage();
+export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [layout, setLayout] = useState<'cards' | 'list'>('cards');
+  const [galleryPage, setGalleryPage] = useState(1);
+
+  const activeRecipe = featuredRecipes[Math.min(activeIndex, featuredRecipes.length - 1)];
+
+  const galleryPages = Math.max(1, Math.ceil(allRecipes.length / GALLERY_PAGE_SIZE));
+  const galleryItems = useMemo(
+    () => allRecipes.slice((galleryPage - 1) * GALLERY_PAGE_SIZE, galleryPage * GALLERY_PAGE_SIZE),
+    [allRecipes, galleryPage],
+  );
 
   return (
     <div className="overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative min-h-[100dvh] flex items-center justify-center bg-gradient-to-br from-[#2A1A10] via-[#3D2A1A] to-[#1F140C] text-white pt-16">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(197,164,110,0.18),transparent_60%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(#5A3E2B_0.8px,transparent_1px)] bg-[length:5px_5px] opacity-30" />
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-[var(--panel-dark)] text-[var(--panel-dark-foreground)] px-6 md:px-14 pt-24 pb-28 md:pt-[100px] md:pb-[120px]">
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at 20% 30%, oklch(32% 0.055 155 / 0.55), transparent 60%), radial-gradient(ellipse at 85% 75%, oklch(28% 0.05 148 / 0.45), transparent 55%)',
+          }}
+        />
+        <div
+          className="absolute inset-0 z-[1] pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(to left, oklch(16% 0.035 160 / 0.96) 30%, oklch(16% 0.035 160 / 0.72) 60%, oklch(16% 0.035 160 / 0.35) 100%)',
+          }}
+        />
 
-        <div className="relative max-w-5xl mx-auto px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md mb-6 text-sm">
-            <Award className="w-4 h-4 text-[#C5A46E]" />
-            <span>{totalRecipes} وصفة احترافية بانتظارك</span>
-          </div>
+        {/* Drip line + falling drops */}
+        <div className="drip-line absolute start-8 md:start-16 top-0 bottom-0 w-[2px] opacity-60 z-[2] pointer-events-none" />
+        {dripDots.map((d, i) => (
+          <div
+            key={i}
+            className="absolute start-[27px] md:start-[59px] -top-2.5 w-3 h-3 rounded-full bg-[var(--accent)] z-[2] pointer-events-none"
+            style={{ animation: `dripFall ${d.dur}s linear infinite`, animationDelay: `${d.delay}s` }}
+          />
+        ))}
 
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight leading-[0.9] mb-4 bg-gradient-to-b from-[#F5D99A] via-[#D4AF37] to-[#B8862B] bg-clip-text text-transparent drop-shadow-[0_2px_12px_rgba(197,164,110,0.35)]">
-            Brew Recipes
-          </h1>
-
-          <p className="text-xl md:text-3xl font-semibold text-[#E9D8C3] mb-6 tracking-tight">
-            {t('heroTitle')}
-          </p>
-
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-[#E9D8C3]/80 mb-10 tracking-tight">
-            {t('heroSubtitle')}
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/store"
-              className="btn btn-gold text-lg px-10 py-4 group inline-flex items-center gap-3"
-            >
-              {t('exploreRecipes')}
-              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/subscriptions"
-              className="btn btn-secondary text-lg px-10 py-4 border-white/30 text-white hover:bg-white/10"
-            >
-              {t('startSubscription')}
-            </Link>
-          </div>
-
-          <div className="mt-16 flex justify-center gap-12 text-sm">
-            <div className="flex items-center gap-2 text-[#E9D8C3]/70">
-              <Users className="w-4 h-4" /> +٨٤٠٠ مستخدم
+        <div className="relative z-[3] max-w-6xl mx-auto md:grid md:grid-cols-[1.1fr_0.9fr] md:gap-10 md:items-center">
+          <div className="ps-8 md:ps-16">
+            <span className="inline-block text-[13px] tracking-wide text-[var(--accent)] font-bold mb-4 border border-[oklch(70%_0.06_90_/_0.4)] px-3.5 py-1.5 rounded-full">
+              القهوة المقطرة يدويًا
+            </span>
+            <h1 className="font-heading font-black text-4xl md:text-[58px] leading-[1.15] mb-5">
+              استخلاص
+              <br />
+              كل قطرة نكهة
+            </h1>
+            <p className="text-base md:text-lg leading-[1.9] text-[oklch(88%_0.015_95)] max-w-[480px] mb-8">
+              وصفات دقيقة للقهوة المقطرة — V60، كيميكس، وكاليتا ويف — بأوزان وحرارة وتوقيت مضبوط لكل صبة، لكوب متوازن في كل مرة.
+            </p>
+            <div className="flex flex-wrap gap-4 items-center">
+              <a
+                href="#recipes"
+                className="bg-[var(--accent)] text-[oklch(99%_0.005_70)] px-7 py-[15px] rounded-[10px] no-underline font-extrabold text-base hover:opacity-90 transition-opacity"
+              >
+                استعرض الوصفات
+              </a>
+              <a
+                href="#guide"
+                className="text-[oklch(93%_0.01_95)] no-underline font-semibold text-[15px] border-b border-[oklch(70%_0.06_90_/_0.5)] pb-0.5 hover:text-[var(--accent)] transition-colors"
+              >
+                تعلّم أساسيات القطر
+              </a>
             </div>
-            <div className="flex items-center gap-2 text-[#E9D8C3]/70">
-              <Star className="w-4 h-4 text-[#C5A46E]" /> ٤.٩ تقييم متوسط
+            <div className="flex flex-wrap gap-8 md:gap-10 mt-12 md:mt-14">
+              <div>
+                <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">92–96°</div>
+                <div className="text-[13px] text-[oklch(78%_0.02_100)]">درجة حرارة الماء المثالية</div>
+              </div>
+              <div>
+                <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">1:16</div>
+                <div className="text-[13px] text-[oklch(78%_0.02_100)]">نسبة القهوة إلى الماء</div>
+              </div>
+              <div>
+                <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">3 دقائق</div>
+                <div className="text-[13px] text-[oklch(78%_0.02_100)]">متوسط زمن التقطير</div>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-xs tracking-[3px] text-white/50">
-          SCROLL TO EXPLORE
-          <div className="w-px h-8 bg-white/30" />
+          <div className="hidden md:block" />
         </div>
       </section>
 
-      {/* Featured Recipes */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
-        <div className="flex items-end justify-between mb-10">
+      {/* Guide pillars */}
+      <section id="guide" className="max-w-7xl mx-auto px-6 md:px-14 py-20 md:py-[110px] grid grid-cols-1 md:grid-cols-3 gap-8">
+        {pillars.map((p) => (
+          <div key={p.title} className="p-8 md:px-[30px] md:py-9 bg-[var(--card)] border border-[var(--border)] rounded-[18px]">
+            <div className="w-[52px] h-[52px] rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] flex items-center justify-center font-heading font-black text-xl mb-5">
+              {p.letter}
+            </div>
+            <h3 className="font-heading font-extrabold text-[22px] mb-2.5">{p.title}</h3>
+            <p className="text-[15px] leading-[1.8] text-[var(--muted-foreground)] m-0">{p.text}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* Recipes */}
+      <section id="recipes" className="max-w-7xl mx-auto px-6 md:px-14 pb-20 md:pb-[110px]">
+        <div className="flex flex-wrap gap-4 items-baseline justify-between mb-10">
           <div>
-            <div className="uppercase tracking-[3px] text-xs text-[#C5A46E] font-semibold mb-2">FEATURED</div>
-            <h2 className="text-5xl tracking-tighter font-bold text-[#5A3E2B] dark:text-[#E9D8C3]">أفضل الوصفات هذا الشهر</h2>
+            <span className="text-[var(--accent)] font-bold text-[13px]">
+              {String(featuredRecipes.length).padStart(2, '0')} طرق مختارة
+            </span>
+            <h2 className="font-heading font-black text-3xl md:text-4xl mt-1.5">وصفات القهوة المقطرة</h2>
           </div>
-          <Link href="/store" className="hidden md:flex items-center gap-2 text-sm font-medium text-[#5A3E2B] dark:text-[#C5A46E] hover:underline">
-            عرض الكل <ArrowLeft className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {featuredRecipes.map((recipe) => (
-            <motion.div
-              key={recipe.id}
-              whileHover={{ y: -8 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          <div className="flex gap-2.5">
+            <button
+              onClick={() => setLayout('cards')}
+              className="px-[18px] py-[9px] rounded-lg text-[13.5px] font-bold cursor-pointer border transition-colors"
+              style={
+                layout === 'cards'
+                  ? { borderColor: 'var(--accent)', background: 'var(--accent)', color: 'oklch(99% 0.005 70)' }
+                  : { borderColor: 'var(--border)', background: 'transparent', color: 'var(--foreground)' }
+              }
             >
-              <RecipeCard recipe={recipe} />
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="bg-[#F8F4EE] dark:bg-[#2A2520] py-16 border-y border-[#E9D8C3] dark:border-[#3D2F25]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="text-[#C5A46E] text-xs tracking-[4px] font-semibold mb-3">EXPLORE BY METHOD</div>
-            <h2 className="text-4xl md:text-5xl tracking-tighter font-bold">اختر طريقة التحضير المفضلة لديك</h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat) => {
-              const Icon = categoryIcons[cat.name] ?? Coffee;
-              return (
-                <Link
-                  key={cat.name}
-                  href={`/store?type=${encodeURIComponent(cat.name)}`}
-                  className="group flex flex-col items-center justify-center p-8 rounded-3xl bg-white dark:bg-[#1C1C1C] border border-[#E9D8C3] dark:border-[#3D2F25] hover:border-[#C5A46E] transition-all active:scale-[0.985]"
-                >
-                  <div className="w-14 h-14 rounded-2xl bg-[#5A3E2B] dark:bg-[#C5A46E] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Icon className="w-7 h-7 text-white dark:text-[#1C1C1C]" />
-                  </div>
-                  <div className="font-semibold text-xl tracking-tight mb-1">{cat.name}</div>
-                  <div className="text-xs text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60">
-                    {cat.count} {cat.count === 1 ? 'وصفة' : 'وصفات'}
-                  </div>
-                </Link>
-              );
-            })}
+              كروت
+            </button>
+            <button
+              onClick={() => setLayout('list')}
+              className="px-[18px] py-[9px] rounded-lg text-[13.5px] font-bold cursor-pointer border transition-colors"
+              style={
+                layout === 'list'
+                  ? { borderColor: 'var(--accent)', background: 'var(--accent)', color: 'oklch(99% 0.005 70)' }
+                  : { borderColor: 'var(--border)', background: 'transparent', color: 'var(--foreground)' }
+              }
+            >
+              قائمة
+            </button>
           </div>
         </div>
-      </section>
 
-      {/* Testimonials */}
-      <section className="max-w-6xl mx-auto px-6 py-20">
-        <div className="text-center mb-14">
-          <div className="text-[#C5A46E] tracking-[3px] text-xs font-semibold mb-3">LOVED BY COFFEE ENTHUSIASTS</div>
-          <h2 className="text-5xl tracking-tighter font-bold">ماذا يقول عشاق القهوة عنا؟</h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="card p-8 rounded-3xl flex flex-col">
-              <div className="flex mb-4">
-                {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-[#C5A46E] text-[#C5A46E]" />
-                ))}
+        <div className={layout === 'cards' ? 'grid grid-cols-1 md:grid-cols-3 gap-7' : 'flex flex-col gap-[18px]'}>
+          {featuredRecipes.map((r, i) => (
+            <div
+              key={r.id}
+              onClick={() => setActiveIndex(i)}
+              className={`cursor-pointer bg-[var(--card)] rounded-[18px] p-5 border-2 transition-colors ${
+                layout === 'cards' ? 'flex flex-col' : 'flex flex-col sm:flex-row gap-6 sm:items-center'
+              }`}
+              style={{ borderColor: i === activeIndex ? 'var(--accent)' : 'var(--border)' }}
+            >
+              <div
+                className="rounded-[14px] overflow-hidden shrink-0 min-w-[160px] mb-[18px] sm:mb-0"
+                style={{ aspectRatio: layout === 'cards' ? '4/3' : '16/9', marginBottom: layout === 'cards' ? 18 : undefined }}
+              >
+                <RecipeImage recipe={r} />
               </div>
-              <blockquote className="text-lg leading-relaxed flex-1">
-                &ldquo;{testimonial.quote}&rdquo;
-              </blockquote>
-              <div className="mt-8 pt-6 border-t border-[#E9D8C3] dark:border-[#3D2F25]">
-                <div className="font-semibold">{testimonial.name}</div>
-                <div className="text-sm text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70">{testimonial.role}</div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2 gap-3">
+                  <h3 className="font-heading font-extrabold text-[21px] m-0">{r.title}</h3>
+                  <span className="text-xs font-bold text-[var(--accent)] whitespace-nowrap">{formatBrewTime(r.brew_time)}</span>
+                </div>
+                <p className="text-sm text-[var(--muted-foreground)] leading-[1.7] mb-3.5 line-clamp-2">{r.description}</p>
+                <div className="flex flex-wrap gap-4 text-[12.5px]">
+                  <span>☕ {r.coffee_grams}غ</span>
+                  <span>💧 {r.water_ml}مل</span>
+                  <span>🌡 {r.temperature}°م</span>
+                </div>
               </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-[#5A3E2B] text-white py-20">
-        <div className="max-w-3xl mx-auto text-center px-6">
-          <h2 className="text-5xl tracking-tighter font-bold mb-6">جاهز لتحسين تجربتك مع القهوة؟</h2>
-          <p className="text-[#E9D8C3] text-xl mb-10">ابدأ الاشتراك الشهري اليوم واحصل على وصول فوري لكل الوصفات الاحترافية.</p>
-
-          <Link href="/subscriptions" className="inline-flex btn bg-white text-[#5A3E2B] hover:bg-[#E9D8C3] text-lg px-12 py-4 rounded-2xl font-semibold">
-            ابدأ الاشتراك الشهري — ٢٩ ر.س
-          </Link>
-          <p className="mt-4 text-sm text-[#E9D8C3]/70">يمكنك الإلغاء في أي وقت • لا التزامات طويلة الأمد</p>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section id="faq" className="max-w-3xl mx-auto px-6 py-20">
-        <div className="text-center mb-12">
-          <div className="text-[#C5A46E] text-xs tracking-[3px] font-semibold mb-2">FREQUENTLY ASKED QUESTIONS</div>
-          <h2 className="text-4xl tracking-tighter font-bold">الأسئلة الشائعة</h2>
+      {/* My recipes gallery */}
+      <section id="gallery" className="max-w-7xl mx-auto px-6 md:px-14 pb-20 md:pb-[110px]">
+        <div className="flex flex-wrap gap-4 items-baseline justify-between mb-9">
+          <div>
+            <span className="text-[var(--accent)] font-bold text-[13px]">معرض الوصفات</span>
+            <h2 className="font-heading font-black text-3xl md:text-4xl mt-1.5">وصفاتي المصوّرة</h2>
+          </div>
+          <span className="text-[13.5px] text-[var(--muted-foreground)] font-medium">
+            صفحة {galleryPage} من {galleryPages}
+          </span>
         </div>
 
-        <div className="space-y-4">
-          {[
-            ["كيف أحصل على الوصفات بعد الشراء؟", "بعد الشراء الفوري، ستظهر الوصفة في ملفك الشخصي ويمكنك الوصول إليها في أي وقت."],
-            ["هل الاشتراك يشمل كل الوصفات؟", "نعم، الاشتراك الشهري أو السنوي يمنحك وصولاً كاملاً غير محدود لكل الوصفات الجديدة والحالية."],
-            ["هل يمكنني تعديل كميات الوصفة؟", "نعم! كل وصفة تحتوي على حاسبة ذكية تقوم بتعديل كميات الماء تلقائياً عند تغيير كمية البن."],
-            ["هل المحتوى محمي؟", "نعم، المحتوى المدفوع محمي ولا يمكن نسخه أو مشاركته. كل وصفة مرتبطة بحسابك."]
-          ].map(([q, a], i) => (
-            <details key={i} className="group card p-6 rounded-2xl">
-              <summary className="font-semibold cursor-pointer list-none flex justify-between items-center">
-                {q}
-                <span className="text-[#C5A46E] group-open:rotate-45 transition-transform">+</span>
-              </summary>
-              <p className="mt-4 text-[#5A3E2B]/80 dark:text-[#E9D8C3]/80 leading-relaxed">{a}</p>
-            </details>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+          {galleryItems.map((r) => (
+            <Link
+              key={r.id}
+              href={`/recipe/${r.slug}`}
+              className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5 flex flex-col gap-3 no-underline text-[var(--foreground)] hover:border-[var(--accent)] transition-colors"
+            >
+              <div className="aspect-square rounded-xl overflow-hidden">
+                <RecipeImage recipe={r} />
+              </div>
+              <h4 className="font-heading font-extrabold text-[17px] m-0">{r.title}</h4>
+              <p className="text-[13.5px] leading-[1.7] text-[var(--muted-foreground)] m-0 line-clamp-3">{r.description}</p>
+            </Link>
           ))}
         </div>
+
+        {galleryPages > 1 && (
+          <div className="flex justify-center gap-2.5 mt-10">
+            {Array.from({ length: galleryPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => setGalleryPage(p)}
+                className="w-[42px] h-[42px] rounded-[10px] text-[15px] font-extrabold cursor-pointer font-heading border transition-colors"
+                style={
+                  galleryPage === p
+                    ? { borderColor: 'var(--accent)', background: 'var(--accent)', color: 'oklch(99% 0.005 70)' }
+                    : { borderColor: 'var(--border)', background: 'transparent', color: 'var(--foreground)' }
+                }
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        )}
       </section>
+
+      {/* Featured recipe detail */}
+      {activeRecipe && (
+        <section id="detail" className="max-w-7xl mx-auto px-6 md:px-14 pb-24 md:pb-[120px]">
+          <div className="bg-[var(--panel-dark)] rounded-[28px] p-8 md:p-16 text-[var(--panel-dark-foreground)] grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14">
+            <div>
+              <span className="text-[var(--accent)] font-bold text-[13px]">وصفة مُفصّلة</span>
+              <h2 className="font-heading font-black text-3xl md:text-[38px] mt-2.5 mb-5">{activeRecipe.title}</h2>
+              <p className="text-[15.5px] leading-[1.9] text-[oklch(85%_0.015_100)] mb-7">{activeRecipe.description}</p>
+              <div className="grid grid-cols-2 gap-4 mb-7">
+                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">القهوة</div>
+                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.coffee_grams}غ</div>
+                </div>
+                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">الماء</div>
+                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.water_ml}مل</div>
+                </div>
+                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">الحرارة</div>
+                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.temperature}°م</div>
+                </div>
+                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
+                  <div className="text-xs text-[oklch(74%_0.02_100)]">الطحن</div>
+                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.grind_size}</div>
+                </div>
+              </div>
+              <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/10' }}>
+                <RecipeImage recipe={activeRecipe} />
+              </div>
+              <Link
+                href={`/recipe/${activeRecipe.slug}`}
+                className="inline-block mt-6 text-[var(--accent)] font-bold text-[14.5px] no-underline border-b border-[var(--accent)] pb-0.5"
+              >
+                عرض الوصفة كاملة
+              </Link>
+            </div>
+
+            <div className="relative ps-[46px]">
+              <div
+                className="absolute start-[15px] top-2 bottom-2 w-[2px]"
+                style={{
+                  background: 'repeating-linear-gradient(to bottom, oklch(55% 0.02 60 / 0.6) 0 6px, transparent 6px 14px)',
+                }}
+              />
+              {dripDotsShort.map((d, i) => (
+                <div
+                  key={i}
+                  className="absolute start-[10px] -top-1.5 w-3 h-3 rounded-full bg-[var(--accent)]"
+                  style={{ animation: `dripFallShort ${d.dur}s linear infinite`, animationDelay: `${d.delay}s` }}
+                />
+              ))}
+              {activeRecipe.steps.map((step, i) => (
+                <div key={i} className="relative mb-8 z-[1]">
+                  <div className="absolute -start-[46px] top-0 w-8 h-8 rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] flex items-center justify-center font-extrabold text-sm font-heading">
+                    {i + 1}
+                  </div>
+                  <div className="flex items-baseline gap-3 mb-1.5">
+                    <h4 className="font-heading font-extrabold text-lg m-0">الخطوة {i + 1}</h4>
+                  </div>
+                  <p className="text-[14.5px] leading-[1.8] text-[oklch(83%_0.015_100)] m-0">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

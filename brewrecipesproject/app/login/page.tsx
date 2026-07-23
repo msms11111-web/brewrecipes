@@ -33,11 +33,11 @@ export default function LoginPage() {
     <div className="min-h-[80dvh] flex items-center justify-center px-6">
       <div className="w-full max-w-md">
         <div className="text-center mb-10">
-          <div className="mx-auto w-14 h-14 rounded-2xl bg-[#5A3E2B] dark:bg-[#C5A46E] flex items-center justify-center mb-6">
-            <span className="text-white dark:text-[#1C1C1C] text-3xl">☕</span>
+          <div className="mx-auto w-14 h-14 rounded-2xl bg-[var(--accent)] flex items-center justify-center mb-6">
+            <span className="text-[oklch(99%_0.005_70)] text-3xl">☕</span>
           </div>
           <h1 className="text-4xl tracking-tighter font-bold">مرحباً بعودتك</h1>
-          <p className="text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mt-2">سجل الدخول للوصول إلى وصفاتك</p>
+          <p className="text-[var(--muted-foreground)] mt-2">سجل الدخول للوصول إلى وصفاتك</p>
         </div>
 
         <form onSubmit={handleLogin} className="card p-8 rounded-3xl space-y-6">
@@ -71,12 +71,12 @@ export default function LoginPage() {
             تسجيل الدخول
           </button>
 
-          <p className="text-center text-sm text-[#5A3E2B]/70">
+          <p className="text-center text-sm text-[var(--foreground)]/70">
             ليس لديك حساب؟{' '}
-            <Link href="/register" className="text-[#C5A46E] hover:underline">أنشئ حساباً جديداً</Link>
+            <Link href="/register" className="text-[var(--accent)] hover:underline">أنشئ حساباً جديداً</Link>
           </p>
 
-          <p className="text-center text-xs text-[#5A3E2B]/50 dark:text-[#E9D8C3]/50 pt-2 border-t border-[#E9D8C3] dark:border-[#3D2F25]">
+          <p className="text-center text-xs text-[var(--muted-foreground)] pt-2 border-t border-[var(--border)]">
             وضع تجريبي: أي بريد وكلمة مرور تعمل. للدخول كمدير استخدم {ADMIN_EMAIL}
           </p>
         </form>

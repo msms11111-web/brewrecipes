@@ -54,9 +54,9 @@ export default function StoreClient({
     <div className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
         <div>
-          <div className="text-[#C5A46E] text-xs tracking-[3px] font-semibold">DISCOVER</div>
-          <h1 className="text-6xl tracking-tighter font-bold text-[#5A3E2B] dark:text-white">المتجر</h1>
-          <p className="text-lg text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mt-2">اختر من بين أفضل وصفات القهوة المختصة في العالم</p>
+          <div className="text-[var(--accent)] text-xs tracking-[3px] font-semibold">DISCOVER</div>
+          <h1 className="text-6xl tracking-tighter font-bold text-[var(--foreground)]">المتجر</h1>
+          <p className="text-lg text-[var(--muted-foreground)] mt-2">اختر من بين أفضل وصفات القهوة المختصة في العالم</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -75,7 +75,7 @@ export default function StoreClient({
       {/* Search and Filters */}
       <div className="mb-4 flex flex-col lg:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute right-4 top-4 w-5 h-5 text-[#5A3E2B]/40" />
+          <Search className="absolute right-4 top-4 w-5 h-5 text-[var(--muted-foreground)]" />
           <input
             type="text"
             placeholder={t('searchPlaceholder')}
@@ -100,7 +100,7 @@ export default function StoreClient({
 
       {/* Roast Level Filter */}
       <div className="mb-8 flex items-center gap-2 flex-wrap">
-        <span className="text-sm text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60">{t('roastLevel')}:</span>
+        <span className="text-sm text-[var(--muted-foreground)]">{t('roastLevel')}:</span>
         {roastLevels.map((level) => (
           <button
             key={level}
@@ -115,20 +115,20 @@ export default function StoreClient({
       {/* Active Filters */}
       {(selectedType || selectedRoast || searchTerm) && (
         <div className="flex items-center gap-2 mb-6 flex-wrap">
-          <span className="text-sm text-[#5A3E2B]/60">الفلاتر النشطة:</span>
+          <span className="text-sm text-[var(--muted-foreground)]">الفلاتر النشطة:</span>
           {selectedType && (
-            <div className="inline-flex items-center gap-1.5 bg-[#E9D8C3] dark:bg-[#3D2F25] px-3 py-1 rounded-full text-sm">
+            <div className="inline-flex items-center gap-1.5 bg-[var(--secondary)] px-3 py-1 rounded-full text-sm">
               {selectedType}
               <button onClick={() => setSelectedType('')} aria-label="إزالة الفلتر"><X className="w-3.5 h-3.5" /></button>
             </div>
           )}
           {selectedRoast && (
-            <div className="inline-flex items-center gap-1.5 bg-[#E9D8C3] dark:bg-[#3D2F25] px-3 py-1 rounded-full text-sm">
+            <div className="inline-flex items-center gap-1.5 bg-[var(--secondary)] px-3 py-1 rounded-full text-sm">
               {selectedRoast}
               <button onClick={() => setSelectedRoast('')} aria-label="إزالة الفلتر"><X className="w-3.5 h-3.5" /></button>
             </div>
           )}
-          <button onClick={clearFilters} className="text-xs underline text-[#C5A46E]">مسح الكل</button>
+          <button onClick={clearFilters} className="text-xs underline text-[var(--accent)]">مسح الكل</button>
         </div>
       )}
 
@@ -139,7 +139,7 @@ export default function StoreClient({
         ) : (
           <div className="col-span-full text-center py-16">
             <p className="text-xl">لا توجد وصفات تطابق بحثك</p>
-            <button onClick={clearFilters} className="mt-4 text-[#C5A46E] underline">{t('clearFilters')}</button>
+            <button onClick={clearFilters} className="mt-4 text-[var(--accent)] underline">{t('clearFilters')}</button>
           </div>
         )}
       </div>

@@ -45,22 +45,22 @@ export default function SubscriptionsPage() {
   return (
     <div className="max-w-5xl mx-auto px-6 py-16">
       <div className="text-center mb-14">
-        <div className="text-[#C5A46E] text-xs tracking-[4px] font-semibold mb-3">MEMBERSHIP</div>
+        <div className="text-[var(--accent)] text-xs tracking-[4px] font-semibold mb-3">MEMBERSHIP</div>
         <h1 className="text-6xl tracking-tighter font-bold mb-4">الاشتراكات</h1>
-        <p className="text-xl text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 max-w-2xl mx-auto">
+        <p className="text-xl text-[var(--muted-foreground)] max-w-2xl mx-auto">
           وصول غير محدود لكل وصفات القهوة المختصة، بدل شراء كل وصفة على حدة
         </p>
       </div>
 
       {active && (
-        <div className="max-w-2xl mx-auto mb-12 card p-6 rounded-3xl flex items-center justify-between gap-4 border-2 border-[#C5A46E]">
+        <div className="max-w-2xl mx-auto mb-12 card p-6 rounded-3xl flex items-center justify-between gap-4 border-2 border-[var(--accent)]">
           <div>
             <div className="font-bold text-lg flex items-center gap-2">
-              <Crown className="w-5 h-5 text-[#C5A46E]" />
+              <Crown className="w-5 h-5 text-[var(--accent)]" />
               اشتراكك النشط: {subscription === 'monthly' ? 'الخطة الشهرية' : 'الخطة السنوية'}
             </div>
             {subscriptionEndsAt && (
-              <p className="text-sm text-[#5A3E2B]/70 dark:text-[#E9D8C3]/70 mt-1">
+              <p className="text-sm text-[var(--muted-foreground)] mt-1">
                 يتجدد في {new Date(subscriptionEndsAt).toLocaleDateString('ar-SA')}
               </p>
             )}
@@ -76,16 +76,16 @@ export default function SubscriptionsPage() {
         <div className="card p-10 rounded-3xl flex flex-col">
           <div className="mb-6">
             <h2 className="text-2xl font-bold tracking-tight">الخطة الشهرية</h2>
-            <p className="text-sm text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60">مرونة كاملة، شهر بشهر</p>
+            <p className="text-sm text-[var(--muted-foreground)]">مرونة كاملة، شهر بشهر</p>
           </div>
           <div className="mb-8">
             <span className="text-6xl font-bold tracking-tighter">٢٩</span>
-            <span className="text-lg text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60"> ر.س / شهرياً</span>
+            <span className="text-lg text-[var(--muted-foreground)]"> ر.س / شهرياً</span>
           </div>
           <ul className="space-y-3 mb-10 flex-1">
             {features.map((f) => (
               <li key={f} className="flex items-start gap-3 text-sm">
-                <Check className="w-5 h-5 text-[#C5A46E] flex-shrink-0" /> {f}
+                <Check className="w-5 h-5 text-[var(--accent)] flex-shrink-0" /> {f}
               </li>
             ))}
           </ul>
@@ -99,27 +99,27 @@ export default function SubscriptionsPage() {
         </div>
 
         {/* Yearly */}
-        <div className="card p-10 rounded-3xl flex flex-col relative border-2 border-[#C5A46E]">
-          <div className="absolute -top-4 right-8 px-4 py-1.5 rounded-full bg-[#C5A46E] text-[#1C1C1C] text-xs font-bold flex items-center gap-1.5">
+        <div className="card p-10 rounded-3xl flex flex-col relative border-2 border-[var(--accent)]">
+          <div className="absolute -top-4 right-8 px-4 py-1.5 rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] text-xs font-bold flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5" /> وفّر ٢٠٪
           </div>
           <div className="mb-6">
             <h2 className="text-2xl font-bold tracking-tight">الخطة السنوية</h2>
-            <p className="text-sm text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60">أفضل قيمة لعشاق القهوة</p>
+            <p className="text-sm text-[var(--muted-foreground)]">أفضل قيمة لعشاق القهوة</p>
           </div>
           <div className="mb-8">
             <span className="text-6xl font-bold tracking-tighter">٢٧٨</span>
-            <span className="text-lg text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60"> ر.س / سنوياً</span>
-            <div className="text-xs text-[#C5A46E] mt-1">أي ما يعادل ٢٣ ر.س شهرياً فقط</div>
+            <span className="text-lg text-[var(--muted-foreground)]"> ر.س / سنوياً</span>
+            <div className="text-xs text-[var(--accent)] mt-1">أي ما يعادل ٢٣ ر.س شهرياً فقط</div>
           </div>
           <ul className="space-y-3 mb-10 flex-1">
             {features.map((f) => (
               <li key={f} className="flex items-start gap-3 text-sm">
-                <Check className="w-5 h-5 text-[#C5A46E] flex-shrink-0" /> {f}
+                <Check className="w-5 h-5 text-[var(--accent)] flex-shrink-0" /> {f}
               </li>
             ))}
             <li className="flex items-start gap-3 text-sm font-semibold">
-              <Check className="w-5 h-5 text-[#C5A46E] flex-shrink-0" /> شهران مجاناً مقارنة بالخطة الشهرية
+              <Check className="w-5 h-5 text-[var(--accent)] flex-shrink-0" /> شهران مجاناً مقارنة بالخطة الشهرية
             </li>
           </ul>
           <button
@@ -132,9 +132,9 @@ export default function SubscriptionsPage() {
         </div>
       </div>
 
-      <p className="text-center text-sm text-[#5A3E2B]/60 dark:text-[#E9D8C3]/60 mt-12">
+      <p className="text-center text-sm text-[var(--muted-foreground)] mt-12">
         الدفع تجريبي حالياً — سيتم ربط Stripe عند الإطلاق الفعلي. تصفح{' '}
-        <Link href="/store" className="text-[#C5A46E] underline">المتجر</Link>{' '}
+        <Link href="/store" className="text-[var(--accent)] underline">المتجر</Link>{' '}
         لشراء وصفات فردية.
       </p>
     </div>

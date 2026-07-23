@@ -4,7 +4,7 @@ import StoreClient from '../components/StoreClient';
 export const dynamic = 'force-dynamic';
 
 export const metadata = {
-  title: 'المتجر | Brew Recipes',
+  title: 'المتجر | قَطرَة',
 };
 
 export default async function StorePage({

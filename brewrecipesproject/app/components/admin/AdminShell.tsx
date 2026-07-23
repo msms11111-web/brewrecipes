@@ -34,12 +34,12 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   const SidebarContent = (
     <div className="flex flex-col h-full">
       <Link href="/admin" className="flex items-center gap-3 px-6 py-6 border-b border-[var(--admin-border)]">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#C5A46E] to-[#8a6d3b] flex items-center justify-center">
-          <Coffee className="w-5 h-5 text-[#1C1C1C]" />
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[oklch(55%_0.09_85)] flex items-center justify-center">
+          <Coffee className="w-5 h-5 text-[var(--primary-foreground)]" />
         </div>
         <div>
-          <div className="font-bold text-lg tracking-tight text-white leading-none">Brew Recipes</div>
-          <div className="text-[10px] tracking-[3px] text-[#C5A46E] mt-1">ADMIN PANEL</div>
+          <div className="font-bold text-lg tracking-tight text-white leading-none">قَطرَة</div>
+          <div className="text-[10px] tracking-[3px] text-[var(--accent)] mt-1">ADMIN PANEL</div>
         </div>
       </Link>
 
@@ -51,8 +51,8 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             onClick={() => setOpen(false)}
             className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${
               isActive(href, exact)
-                ? 'bg-[#C5A46E] text-[#1C1C1C]'
-                : 'text-[#E9D8C3]/80 hover:bg-white/5 hover:text-white'
+                ? 'bg-[var(--accent)] text-[var(--primary-foreground)]'
+                : 'text-[oklch(88%_0.015_95)]/80 hover:bg-white/5 hover:text-white'
             }`}
           >
             <Icon className="w-[18px] h-[18px]" />
@@ -65,7 +65,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
         <Link
           href="/"
           target="_blank"
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-[#E9D8C3]/80 hover:bg-white/5 hover:text-white transition-colors"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm text-[oklch(88%_0.015_95)]/80 hover:bg-white/5 hover:text-white transition-colors"
         >
           <ExternalLink className="w-[18px] h-[18px]" /> عرض الموقع
         </Link>
@@ -80,16 +80,16 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
   );
 
   return (
-    <div className="min-h-screen bg-[#F4EEE4] dark:bg-[#161310]" style={{ ['--admin-border' as string]: 'rgba(255,255,255,0.08)' }}>
+    <div className="min-h-screen bg-[var(--background)]" style={{ ['--admin-border' as string]: 'rgba(255,255,255,0.08)' }}>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex fixed inset-y-0 right-0 w-64 bg-[#2A1E15] flex-col z-40">
+      <aside className="hidden lg:flex fixed inset-y-0 right-0 w-64 bg-[var(--panel-dark)] flex-col z-40">
         {SidebarContent}
       </aside>
 
       {/* Mobile top bar */}
-      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-16 bg-[#2A1E15] text-white">
+      <div className="lg:hidden sticky top-0 z-40 flex items-center justify-between px-4 h-16 bg-[var(--panel-dark)] text-white">
         <div className="flex items-center gap-2">
-          <Coffee className="w-6 h-6 text-[#C5A46E]" />
+          <Coffee className="w-6 h-6 text-[var(--accent)]" />
           <span className="font-bold">لوحة التحكم</span>
         </div>
         <button onClick={() => setOpen(true)} aria-label="القائمة" className="p-2">
@@ -101,7 +101,7 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
       {open && (
         <div className="lg:hidden fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <aside className="absolute inset-y-0 right-0 w-72 max-w-[85vw] bg-[#2A1E15]">
+          <aside className="absolute inset-y-0 right-0 w-72 max-w-[85vw] bg-[var(--panel-dark)]">
             <button onClick={() => setOpen(false)} aria-label="إغلاق" className="absolute top-5 left-4 text-white/70 p-1">
               <X className="w-5 h-5" />
             </button>
