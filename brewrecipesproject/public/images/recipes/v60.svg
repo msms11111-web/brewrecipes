@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+<defs>
+<radialGradient id="glow" cx="50%" cy="35%" r="75%">
+  <stop offset="0%" stop-color="#10291C"/><stop offset="100%" stop-color="#0A1E14"/>
+</radialGradient>
+<linearGradient id="coffee" x1="0" y1="0" x2="0" y2="1">
+  <stop offset="0%" stop-color="#D08A55"/><stop offset="100%" stop-color="#B96A3D"/>
+</linearGradient>
+</defs>
+<rect width="800" height="600" fill="url(#glow)"/>
+<circle cx="400" cy="300" r="215" fill="none" stroke="#8A6D3B" stroke-opacity="0.35" stroke-width="2"/>
+<circle cx="400" cy="300" r="240" fill="none" stroke="#8A6D3B" stroke-opacity="0.18" stroke-width="1.5" stroke-dasharray="3 9"/>
+
+<g stroke="#EFE6CC" stroke-opacity="0.4" stroke-width="3.6" fill="none" stroke-linecap="round">
+<path d="M380.2 205 c 7.2 -16.2 -7.2 -27.0 1.8 -43.2"/>
+<path d="M401.8 199.6 c 7.2 -16.2 -7.2 -27.0 1.8 -43.2"/>
+<path d="M423.4 205 c 7.2 -16.2 -7.2 -27.0 1.8 -43.2"/>
+</g>
+<path d="M300 220 L500 220 L415 340 L385 340 Z" fill="none" stroke="#C9A24B" stroke-width="7" stroke-linejoin="round"/>
+<path d="M318 244 L482 244" stroke="#8A6D3B" stroke-width="3" stroke-dasharray="5 8"/>
+<path d="M330 262 L470 262 L412 330 L388 330 Z" fill="url(#coffee)" opacity="0.9"/>
+<circle cx="400" cy="356" r="7" fill="#B96A3D"/><circle cx="400" cy="378" r="7" fill="#B96A3D"/>
+<path d="M330 400 L470 400 L458 496 L342 496 Z" fill="none" stroke="#C9A24B" stroke-width="7" stroke-linejoin="round"/>
+<path d="M348 452 L452 452 L446 484 L354 484 Z" fill="url(#coffee)"/>
+<path d="M470 414 q 44 10 0 52" fill="none" stroke="#C9A24B" stroke-width="6"/>
+
+</svg>

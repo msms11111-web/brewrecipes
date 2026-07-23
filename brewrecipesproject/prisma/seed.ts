@@ -3,11 +3,12 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 // tasting_notes و steps تُخزَّن كنص JSON.
-// لا تُوضع صور افتراضية — يرفع المالك كل الصور من لوحة التحكم (مكتبة الصور).
+// الصور الافتراضية رسوم SVG بهوية قَطرَة في public/images/recipes — ويمكن استبدالها من لوحة التحكم.
 const recipes = [
   {
     title: "V60 - إثيوبيا يرغاتشيف",
     slug: "v60-ethiopia-yirgacheffe",
+    image_url: "/images/recipes/v60.svg",
     description: "وصفة نظيفة وحمضية رائعة من أفضل مناطق إثيوبيا. مثالية لعشاق القهوة الخفيفة ذات النكهات الزهرية والفواكهية.",
     coffee_type: "V60",
     roastery: "Blue Bottle Coffee",
@@ -32,6 +33,7 @@ const recipes = [
   {
     title: "Espresso - البرازيل سيراادو",
     slug: "espresso-brazil-cerrado",
+    image_url: "/images/recipes/espresso.svg",
     description: "إسبريسو متوازن وغني بالنكهات الشوكولاتية والمكسرات من البرازيل. جسم كامل وقوام كريمي يناسب البدء الصباحي.",
     coffee_type: "Espresso",
     roastery: "Counter Culture Coffee",
@@ -55,6 +57,7 @@ const recipes = [
   {
     title: "Cold Brew - كولومبيا سوبريمو",
     slug: "cold-brew-colombia",
+    image_url: "/images/recipes/cold-brew.svg",
     description: "كولد برو ناعم ومنعش مع نكهات الكاكاو والتوابل الدافئة. تحضير بطيء يمنحك قهوة باردة منخفضة الحموضة.",
     coffee_type: "Cold Brew",
     roastery: "Stumptown Coffee",
@@ -78,6 +81,7 @@ const recipes = [
   {
     title: "Chemex - غواتيمالا أنتيغوا",
     slug: "chemex-guatemala",
+    image_url: "/images/recipes/chemex.svg",
     description: "كوب نظيف وصافٍ بنكهات التوت والحمضيات من مرتفعات غواتيمالا. فلتر الكيمكس السميك يمنحك صفاءً استثنائياً.",
     coffee_type: "Chemex",
     roastery: "Intelligentsia",
@@ -101,6 +105,7 @@ const recipes = [
   {
     title: "Origami - كينيا نييري",
     slug: "origami-kenya-nyeri",
+    image_url: "/images/recipes/origami.svg",
     description: "وصفة أوريغامي مشرقة بحمضية الكشمش الأسود المميزة لقهوة كينيا. مقدَّمة بأسلوب يبرز حلاوة الكوب وتعقيده.",
     coffee_type: "Origami",
     roastery: "Onyx Coffee Lab",
@@ -124,6 +129,7 @@ const recipes = [
   {
     title: "Kalita Wave - كوستاريكا تاراسو",
     slug: "kalita-costa-rica-tarrazu",
+    image_url: "/images/recipes/kalita.svg",
     description: "استخلاص متوازن ومستقر بفضل قاعدة الكاليتا المسطحة. نكهات العسل والتفاح المطبوخ من مزارع تاراسو العالية.",
     coffee_type: "Kalita Wave",
     roastery: "Heart Coffee Roasters",
