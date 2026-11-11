@@ -27,6 +27,7 @@ export default function Navbar() {
 
   const navLinks = [
     { href: '/', label: t('home') },
+    { href: '/xbloom', label: t('xbloom') },
     { href: '/store', label: t('store') },
     { href: '/subscriptions', label: t('subscriptions') },
     { href: '/favorites', label: t('favorites') },
