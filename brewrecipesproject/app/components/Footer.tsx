@@ -16,6 +16,7 @@ export default function Footer() {
           </p>
         </div>
         <div className="flex flex-wrap gap-7 md:justify-end text-[14.5px] text-[var(--muted-foreground)]">
+          <Link href="/xbloom" className="no-underline hover:text-[var(--accent)] transition-colors">{t('xbloom')}</Link>
           <Link href="/store" className="no-underline hover:text-[var(--accent)] transition-colors">{t('store')}</Link>
           <Link href="/subscriptions" className="no-underline hover:text-[var(--accent)] transition-colors">{t('subscriptions')}</Link>
           <Link href="/favorites" className="no-underline hover:text-[var(--accent)] transition-colors">{t('favorites')}</Link>
