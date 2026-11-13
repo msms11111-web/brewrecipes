@@ -23,6 +23,7 @@ export default function Navbar() {
   const links = [
     { href: '/', label: t('home') },
     { href: '/store', label: language === 'ar' ? 'الوصفات' : 'Recipes' },
+    { href: '/illustrated-recipes', label: language === 'ar' ? 'وصفات مصوّرة' : 'Illustrated' },
     { href: '/xbloom', label: t('xbloom') },
     { href: '/academy', label: language === 'ar' ? 'تعلّم' : 'Learn' },
     { href: '/subscriptions', label: t('subscriptions') },
