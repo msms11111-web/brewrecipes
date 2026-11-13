@@ -3,6 +3,7 @@ import { Tajawal, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import "./redesign.css";
 import "./editorial.css";
+import "./editorial-platform.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { LanguageProvider } from "./components/LanguageProvider";
