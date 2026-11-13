@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Tajawal, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+import "./redesign.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { LanguageProvider } from "./components/LanguageProvider";
