@@ -1,0 +1,34 @@
+/* Illustrated brewing archive — original ChatGPT images, local static assets */
+.archive-recipes-section{background:#f6f1e9;color:#21392e;padding:clamp(50px,7vw,95px) 0;}
+.archive-recipes-compact{padding:clamp(35px,5vw,64px) 0;background:transparent;}
+.archive-recipes-head{display:flex;gap:26px;align-items:flex-end;justify-content:space-between;margin-bottom:30px;}
+.archive-recipes-head h2{font-size:clamp(28px,3.2vw,45px);font-weight:900;line-height:1.3;margin:10px 0;}
+.archive-recipes-head p{color:#617067;line-height:1.9;max-width:620px;}
+.archive-recipes-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
+.archive-recipe-card{display:block;min-width:0;overflow:hidden;border:1px solid #e1d8c7;background:#fffcf5;color:#1b3528;border-radius:14px;box-shadow:0 12px 35px #14291a10;text-decoration:none;transition:transform .2s ease,box-shadow .2s ease;}
+.archive-recipe-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px #14291a22;}
+.archive-recipe-picture{aspect-ratio:1024/530;overflow:hidden;background:#e4d9cb;}
+.archive-recipe-picture img{width:100%;height:100%;display:block;object-fit:contain;}
+.archive-recipe-caption{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:16px 18px;}
+.archive-recipe-caption span{display:flex;flex-direction:column;gap:3px;}
+.archive-recipe-caption small{font-size:11px;color:#8b6c51;}
+.archive-recipe-caption strong{font-size:17px;}
+.archive-recipes-page{background:#f6f1e9;min-height:85vh;}
+.archive-page-hero{background:linear-gradient(135deg,#153e2e,#0d251d);color:#f9f3e6;padding:70px 0 60px;}
+.archive-page-hero h1{font-size:clamp(38px,5vw,66px);margin:12px 0 16px;}
+.archive-page-hero p{max-width:690px;color:#e4d9c8;line-height:1.9;}
+.archive-hero-back{display:inline-block;color:#e8c89a;margin-top:18px;}
+.archive-source-note{padding:20px 0 60px;color:#6b6d63;font-size:13px;line-height:1.9;}
+.archive-detail-page{min-height:85vh;background:#f6f1e9;color:#203c2e;padding:32px 0 70px;}
+.archive-breadcrumb{display:flex;gap:12px;align-items:center;color:#6b766a;font-size:13px;margin-bottom:32px;}
+.archive-breadcrumb a{color:#315541;}
+.archive-detail-head{display:flex;justify-content:space-between;gap:25px;align-items:flex-end;margin-bottom:26px;}
+.archive-detail-head h1{font-size:clamp(35px,4.2vw,62px);margin:10px 0;}
+.archive-detail-head p{color:#68766c;}
+.archive-full-image{border:1px solid #adc4b2;border-radius:9px;padding:12px 18px;color:#1c4e33;font-weight:700;text-decoration:none;white-space:nowrap;}
+.archive-detail-image{width:100%;height:auto;display:block;border-radius:16px;box-shadow:0 16px 45px #18342520;background:#fff;}
+.archive-details-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:25px 0;}
+.archive-details-specs>div{display:flex;flex-direction:column;gap:8px;background:#fffaf1;padding:19px;border-radius:10px;color:#637365;}
+.archive-details-specs strong{color:#214b37;font-size:19px;}
+@media(max-width:850px){.archive-recipes-grid{grid-template-columns:1fr 1fr;}.archive-recipes-head{flex-direction:column;align-items:flex-start;}.archive-details-specs{grid-template-columns:1fr 1fr;}}
+@media(max-width:580px){.archive-recipes-grid{grid-template-columns:1fr;}.archive-detail-head{flex-direction:column;align-items:flex-start;}.archive-page-hero{padding:46px 0;}.archive-recipe-picture{aspect-ratio:1024/530;}.archive-recipe-caption strong{font-size:19px;}}

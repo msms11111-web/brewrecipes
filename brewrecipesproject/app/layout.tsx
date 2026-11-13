@@ -4,6 +4,7 @@ import "./globals.css";
 import "./redesign.css";
 import "./editorial.css";
 import "./editorial-platform.css";
+import "./illustrated-recipes.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { LanguageProvider } from "./components/LanguageProvider";

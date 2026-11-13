@@ -5,6 +5,7 @@ import { useMemo, useState } from 'react';
 import { ArrowUpLeft, BookOpen, Coffee, Droplets, FlaskConical, MoveUpRight, Waves } from 'lucide-react';
 import type { Recipe } from '@/app/types';
 import RecipeCard from './RecipeCard';
+import IllustratedRecipeGallery from './IllustratedRecipeGallery';
 import MethodIllustration from './MethodIllustration';
 
 const methods = [
@@ -61,6 +62,8 @@ export default function HomeClient({ featuredRecipes, allRecipes }: { featuredRe
           {featuredRecipes.length ? <div className="ed-cards">{featuredRecipes.map((recipe, i) => <div key={recipe.id} className={'ed-card-outer ed-card-' + i}><RecipeCard recipe={recipe}/></div>)}</div> : <div className="ed-blank">ما فيه وصفات منشورة حاليًا.</div>}
         </div>
       </section>
+
+      <IllustratedRecipeGallery />
 
       <section className="ed-spotlight" aria-labelledby="ed-spot-title">
         <div className="ed-shell ed-spot-grid">

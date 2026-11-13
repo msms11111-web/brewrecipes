@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import { Search, SlidersHorizontal, X, ArrowUpLeft } from 'lucide-react';
 import Link from 'next/link';
 import RecipeCard from './RecipeCard';
+import IllustratedRecipeGallery from './IllustratedRecipeGallery';
 import type { Recipe } from '@/app/types';
 
 const roastLevels = [
@@ -29,6 +30,7 @@ export default function StoreClient({ recipes, initialType }: { recipes: Recipe[
   const clear = () => { setSearch(''); setType(''); setRoast(''); };
   return <>
     <section className="q-academy-hero"><div className="q-wrap"><span className="q-overline q-overline-light">مكتبة قَطرة</span><h1>الوصفة المناسبة،<br/>تبدأ من هنا.</h1><p>استكشف الوصفات حسب الأداة، بلد المنشأ أو درجة التحميص، ثم ادخل لتفاصيل التحضير خطوة بخطوة.</p></div></section>
+    <IllustratedRecipeGallery compact />
     <section className="q-section"><div className="q-wrap">
       <div className="flex gap-3 items-start md:items-center flex-col md:flex-row justify-between mb-7">
         <div><span className="q-overline"><SlidersHorizontal size={15}/> خيارات التصفية</span><h2 className="text-2xl font-black mt-2">استكشف المجموعة</h2></div>
