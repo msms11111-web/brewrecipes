@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
-import { ArrowUpLeft, BookOpen, Check, Coffee, Droplets, FlaskConical, MoveUpRight, Play, Sparkles, Waves } from 'lucide-react';
+import { ArrowUpLeft, BookOpen, Coffee, Droplets, FlaskConical, MoveUpRight, Waves } from 'lucide-react';
 import type { Recipe } from '@/app/types';
 import RecipeCard from './RecipeCard';
 import MethodIllustration from './MethodIllustration';
@@ -20,7 +20,6 @@ export default function HomeClient({ featuredRecipes, allRecipes }: { featuredRe
   const [grams, setGrams] = useState(20);
   const [ratio, setRatio] = useState(15);
   const water = useMemo(() => grams * ratio, [grams, ratio]);
-  const first = featuredRecipes[0];
   const count = allRecipes.length;
 
   return (
