@@ -1,328 +1,99 @@
 "use client";
 
-import React, { useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
+import { ArrowLeft, ArrowUpLeft, Coffee, Droplets, Thermometer, Clock3, FlaskConical, Sparkles, BookOpen, CirclePlay, Check, SlidersHorizontal } from 'lucide-react';
 import type { Recipe } from '@/app/types';
+import BrewIllustration from './BrewIllustration';
+import RecipeCard from './RecipeCard';
+import MethodIllustration from './MethodIllustration';
 
-const pillars = [
-  { letter: 'ط', title: 'الطحن', text: 'حجم حبيبات متجانس يحدد سرعة التصريف وتوازن النكهة في الكوب.' },
-  { letter: 'ح', title: 'الحرارة', text: 'بين 92 و96 درجة مئوية — أقل يعطي حموضة زائدة، وأعلى يعطي مرارة.' },
-  { letter: 'و', title: 'الوقت', text: 'ضبط زمن تصريف الماء يوازن بين الحلاوة والحموضة والمرارة.' },
+const tools = [
+  { label: 'V60', subtitle: 'استخلاص نظيف ومتوازن', icon: '01' },
+  { label: 'Espresso', subtitle: 'كثافة ونكهة مركزة', icon: '02' },
+  { label: 'Chemex', subtitle: 'صفاء وأناقة في الكوب', icon: '03' },
+  { label: 'Kalita Wave', subtitle: 'ثبات أعلى في التقطير', icon: '04' },
+  { label: 'Origami', subtitle: 'مرونة وتجارب مختلفة', icon: '05' },
+  { label: 'Cold Brew', subtitle: 'تحضير بارد وناعم', icon: '06' },
 ];
 
-const dripDots = [0, 1, 2, 3, 4, 5].map((i) => ({ dur: 2.4 + (i % 3) * 0.4, delay: i * 0.7 }));
-const dripDotsShort = [0, 1, 2].map((i) => ({ dur: 1.8 + i * 0.3, delay: i * 0.9 }));
+const lessons = [
+  { n: '01', label: 'الطحن', detail: 'درجة الطحن تؤثر على سرعة مرور الماء؛ ابدأ بوصفة واضحة ثم عدّل حسب التذوق.', icon: SlidersHorizontal },
+  { n: '02', label: 'حرارة الماء', detail: 'تتغير الحرارة المناسبة حسب البن والتحميص وطريقة التحضير؛ لا توجد درجة واحدة تناسب الجميع.', icon: Thermometer },
+  { n: '03', label: 'الوقت والصب', detail: 'التوقيت وتوزيع الصب يؤثران على الاستخلاص. اتبع الخطوات ثم سجّل النتيجة.', icon: Clock3 },
+];
 
-const GALLERY_PAGE_SIZE = 8;
-
-function formatBrewTime(seconds: number): string {
-  const m = Math.floor(seconds / 60);
-  const s = seconds % 60;
-  return s === 0 ? `${m} دقائق` : `${m}:${s.toString().padStart(2, '0')} دقيقة`;
-}
-
-function RecipeImage({ recipe, className }: { recipe: Recipe; className?: string }) {
-  if (recipe.image_url) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={recipe.image_url} alt={recipe.title} className={`w-full h-full object-cover ${className ?? ''}`} />
-    );
-  }
-  return (
-    <div className={`img-placeholder w-full h-full flex items-center justify-center ${className ?? ''}`}>
-      <span className="font-mono text-[11px] text-[oklch(90%_0.02_95)] text-center p-2.5">[{recipe.title}]</span>
-    </div>
-  );
-}
-
-interface HomeClientProps {
-  featuredRecipes: Recipe[];
-  allRecipes: Recipe[];
-}
-
-export default function HomeClient({ featuredRecipes, allRecipes }: HomeClientProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [layout, setLayout] = useState<'cards' | 'list'>('cards');
-  const [galleryPage, setGalleryPage] = useState(1);
-
-  const activeRecipe = featuredRecipes[Math.min(activeIndex, featuredRecipes.length - 1)];
-
-  const galleryPages = Math.max(1, Math.ceil(allRecipes.length / GALLERY_PAGE_SIZE));
-  const galleryItems = useMemo(
-    () => allRecipes.slice((galleryPage - 1) * GALLERY_PAGE_SIZE, galleryPage * GALLERY_PAGE_SIZE),
-    [allRecipes, galleryPage],
-  );
+export default function HomeClient({ featuredRecipes, allRecipes }: { featuredRecipes: Recipe[]; allRecipes: Recipe[] }) {
+  const [grams, setGrams] = useState(18);
+  const totalMethods = new Set(allRecipes.map((r) => r.coffee_type)).size;
 
   return (
-    <div className="overflow-hidden">
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-[var(--panel-dark)] text-[var(--panel-dark-foreground)] px-6 md:px-14 pt-24 pb-28 md:pt-[100px] md:pb-[120px]">
-        <div
-          className="absolute inset-0 z-0 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse at 20% 30%, oklch(32% 0.055 155 / 0.55), transparent 60%), radial-gradient(ellipse at 85% 75%, oklch(28% 0.05 148 / 0.45), transparent 55%)',
-          }}
-        />
-        <div
-          className="absolute inset-0 z-[1] pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(to left, oklch(16% 0.035 160 / 0.96) 30%, oklch(16% 0.035 160 / 0.72) 60%, oklch(16% 0.035 160 / 0.35) 100%)',
-          }}
-        />
-
-        {/* Drip line + falling drops */}
-        <div className="drip-line absolute start-8 md:start-16 top-0 bottom-0 w-[2px] opacity-60 z-[2] pointer-events-none" />
-        {dripDots.map((d, i) => (
-          <div
-            key={i}
-            className="absolute start-[27px] md:start-[59px] -top-2.5 w-3 h-3 rounded-full bg-[var(--accent)] z-[2] pointer-events-none"
-            style={{ animation: `dripFall ${d.dur}s linear infinite`, animationDelay: `${d.delay}s` }}
-          />
-        ))}
-
-        <div className="relative z-[3] max-w-6xl mx-auto md:grid md:grid-cols-[1.1fr_0.9fr] md:gap-10 md:items-center">
-          <div className="ps-8 md:ps-16">
-            <span className="inline-block text-[13px] tracking-wide text-[var(--accent)] font-bold mb-4 border border-[oklch(70%_0.06_90_/_0.4)] px-3.5 py-1.5 rounded-full">
-              القهوة المقطرة يدويًا
-            </span>
-            <h1 className="font-heading font-black text-4xl md:text-[58px] leading-[1.15] mb-5">
-              استخلاص
-              <br />
-              كل قطرة نكهة
-            </h1>
-            <p className="text-base md:text-lg leading-[1.9] text-[oklch(88%_0.015_95)] max-w-[480px] mb-8">
-              وصفات دقيقة للقهوة المقطرة — V60، كيميكس، وكاليتا ويف — بأوزان وحرارة وتوقيت مضبوط لكل صبة، لكوب متوازن في كل مرة.
-            </p>
-            <div className="flex flex-wrap gap-4 items-center">
-              <a
-                href="#recipes"
-                className="bg-[var(--accent)] text-[oklch(99%_0.005_70)] px-7 py-[15px] rounded-[10px] no-underline font-extrabold text-base hover:opacity-90 transition-opacity"
-              >
-                استعرض الوصفات
-              </a>
-              <a
-                href="#guide"
-                className="text-[oklch(93%_0.01_95)] no-underline font-semibold text-[15px] border-b border-[oklch(70%_0.06_90_/_0.5)] pb-0.5 hover:text-[var(--accent)] transition-colors"
-              >
-                تعلّم أساسيات القطر
-              </a>
+    <div className="q-home">
+      <section className="q-hero" aria-labelledby="q-hero-title">
+        <div className="q-hero-grain" aria-hidden="true" />
+        <div className="q-wrap q-hero-grid">
+          <div className="q-hero-copy">
+            <span className="q-overline q-overline-light"><span className="q-dot" /> دليل القهوة المختصة · قَطرة</span>
+            <h1 id="q-hero-title">القهوة فنّ.<br /><span>والتفاصيل تصنع الفرق.</span></h1>
+            <p>من أول حبة إلى آخر قطرة، اكتشف وصفات مدروسة وتجارب تحضير مصوّرة تساعدك تصنع كوبك بالطريقة التي تحبها.</p>
+            <div className="q-hero-actions">
+              <Link className="q-btn q-btn-cream" href="/store">استكشف الوصفات <ArrowUpLeft size={18} aria-hidden="true" /></Link>
+              <a className="q-text-link" href="#learn">تعلّم أساسيات التحضير <ArrowLeft size={17} aria-hidden="true" /></a>
             </div>
-            <div className="flex flex-wrap gap-8 md:gap-10 mt-12 md:mt-14">
-              <div>
-                <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">92–96°</div>
-                <div className="text-[13px] text-[oklch(78%_0.02_100)]">درجة حرارة الماء المثالية</div>
-              </div>
-              <div>
-                <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">1:16</div>
-                <div className="text-[13px] text-[oklch(78%_0.02_100)]">نسبة القهوة إلى الماء</div>
-              </div>
-              <div>
-                <div className="font-heading text-2xl md:text-3xl font-extrabold text-[var(--accent)]">3 دقائق</div>
-                <div className="text-[13px] text-[oklch(78%_0.02_100)]">متوسط زمن التقطير</div>
-              </div>
+            <div className="q-hero-metrics" aria-label="محتوى مكتبة قَطرة">
+              <div><strong>{allRecipes.length}</strong><span>وصفات متاحة</span></div>
+              <div><strong>{totalMethods}</strong><span>طرق تحضير</span></div>
+              <div><strong>خطوة بخطوة</strong><span>شرح لكل وصفة</span></div>
             </div>
           </div>
-          <div className="hidden md:block" />
+          <BrewIllustration />
         </div>
+        <div className="q-hero-foot"><div className="q-wrap"><span>BREW WITH INTENTION</span><span>01 — 04</span><span>اكتشف، حضّر، وتذوّق</span></div></div>
       </section>
 
-      {/* Guide pillars */}
-      <section id="guide" className="max-w-7xl mx-auto px-6 md:px-14 py-20 md:py-[110px] grid grid-cols-1 md:grid-cols-3 gap-8">
-        {pillars.map((p) => (
-          <div key={p.title} className="p-8 md:px-[30px] md:py-9 bg-[var(--card)] border border-[var(--border)] rounded-[18px]">
-            <div className="w-[52px] h-[52px] rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] flex items-center justify-center font-heading font-black text-xl mb-5">
-              {p.letter}
-            </div>
-            <h3 className="font-heading font-extrabold text-[22px] mb-2.5">{p.title}</h3>
-            <p className="text-[15px] leading-[1.8] text-[var(--muted-foreground)] m-0">{p.text}</p>
-          </div>
-        ))}
-      </section>
-
-      {/* Recipes */}
-      <section id="recipes" className="max-w-7xl mx-auto px-6 md:px-14 pb-20 md:pb-[110px]">
-        <div className="flex flex-wrap gap-4 items-baseline justify-between mb-10">
-          <div>
-            <span className="text-[var(--accent)] font-bold text-[13px]">
-              {String(featuredRecipes.length).padStart(2, '0')} طرق مختارة
-            </span>
-            <h2 className="font-heading font-black text-3xl md:text-4xl mt-1.5">وصفات القهوة المقطرة</h2>
-          </div>
-          <div className="flex gap-2.5">
-            <button
-              onClick={() => setLayout('cards')}
-              className="px-[18px] py-[9px] rounded-lg text-[13.5px] font-bold cursor-pointer border transition-colors"
-              style={
-                layout === 'cards'
-                  ? { borderColor: 'var(--accent)', background: 'var(--accent)', color: 'oklch(99% 0.005 70)' }
-                  : { borderColor: 'var(--border)', background: 'transparent', color: 'var(--foreground)' }
-              }
-            >
-              كروت
-            </button>
-            <button
-              onClick={() => setLayout('list')}
-              className="px-[18px] py-[9px] rounded-lg text-[13.5px] font-bold cursor-pointer border transition-colors"
-              style={
-                layout === 'list'
-                  ? { borderColor: 'var(--accent)', background: 'var(--accent)', color: 'oklch(99% 0.005 70)' }
-                  : { borderColor: 'var(--border)', background: 'transparent', color: 'var(--foreground)' }
-              }
-            >
-              قائمة
-            </button>
-          </div>
-        </div>
-
-        <div className={layout === 'cards' ? 'grid grid-cols-1 md:grid-cols-3 gap-7' : 'flex flex-col gap-[18px]'}>
-          {featuredRecipes.map((r, i) => (
-            <div
-              key={r.id}
-              onClick={() => setActiveIndex(i)}
-              className={`cursor-pointer bg-[var(--card)] rounded-[18px] p-5 border-2 transition-colors ${
-                layout === 'cards' ? 'flex flex-col' : 'flex flex-col sm:flex-row gap-6 sm:items-center'
-              }`}
-              style={{ borderColor: i === activeIndex ? 'var(--accent)' : 'var(--border)' }}
-            >
-              <div
-                className="rounded-[14px] overflow-hidden shrink-0 min-w-[160px] mb-[18px] sm:mb-0"
-                style={{ aspectRatio: layout === 'cards' ? '4/3' : '16/9', marginBottom: layout === 'cards' ? 18 : undefined }}
-              >
-                <RecipeImage recipe={r} />
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-2 gap-3">
-                  <h3 className="font-heading font-extrabold text-[21px] m-0">{r.title}</h3>
-                  <span className="text-xs font-bold text-[var(--accent)] whitespace-nowrap">{formatBrewTime(r.brew_time)}</span>
-                </div>
-                <p className="text-sm text-[var(--muted-foreground)] leading-[1.7] mb-3.5 line-clamp-2">{r.description}</p>
-                <div className="flex flex-wrap gap-4 text-[12.5px]">
-                  <span>☕ {r.coffee_grams}غ</span>
-                  <span>💧 {r.water_ml}مل</span>
-                  <span>🌡 {r.temperature}°م</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* My recipes gallery */}
-      <section id="gallery" className="max-w-7xl mx-auto px-6 md:px-14 pb-20 md:pb-[110px]">
-        <div className="flex flex-wrap gap-4 items-baseline justify-between mb-9">
-          <div>
-            <span className="text-[var(--accent)] font-bold text-[13px]">معرض الوصفات</span>
-            <h2 className="font-heading font-black text-3xl md:text-4xl mt-1.5">وصفاتي المصوّرة</h2>
-          </div>
-          <span className="text-[13.5px] text-[var(--muted-foreground)] font-medium">
-            صفحة {galleryPage} من {galleryPages}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {galleryItems.map((r) => (
-            <Link
-              key={r.id}
-              href={`/recipe/${r.slug}`}
-              className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-3.5 flex flex-col gap-3 no-underline text-[var(--foreground)] hover:border-[var(--accent)] transition-colors"
-            >
-              <div className="aspect-square rounded-xl overflow-hidden">
-                <RecipeImage recipe={r} />
-              </div>
-              <h4 className="font-heading font-extrabold text-[17px] m-0">{r.title}</h4>
-              <p className="text-[13.5px] leading-[1.7] text-[var(--muted-foreground)] m-0 line-clamp-3">{r.description}</p>
-            </Link>
-          ))}
-        </div>
-
-        {galleryPages > 1 && (
-          <div className="flex justify-center gap-2.5 mt-10">
-            {Array.from({ length: galleryPages }, (_, i) => i + 1).map((p) => (
-              <button
-                key={p}
-                onClick={() => setGalleryPage(p)}
-                className="w-[42px] h-[42px] rounded-[10px] text-[15px] font-extrabold cursor-pointer font-heading border transition-colors"
-                style={
-                  galleryPage === p
-                    ? { borderColor: 'var(--accent)', background: 'var(--accent)', color: 'oklch(99% 0.005 70)' }
-                    : { borderColor: 'var(--border)', background: 'transparent', color: 'var(--foreground)' }
-                }
-              >
-                {p}
-              </button>
+      <section className="q-section q-tools" id="methods">
+        <div className="q-wrap">
+          <div className="q-section-heading"><div><span className="q-overline">01 / اكتشف طريقتك</span><h2>لكل أداة، حكاية مختلفة.</h2><p>اختر طريقة التحضير، وشاهد الوصفات المناسبة لها.</p></div><Link href="/store" className="q-inline-link">كل الوصفات <ArrowUpLeft size={17}/></Link></div>
+          <div className="q-tools-grid">
+            {tools.map((method) => (
+              <Link key={method.label} href={'/store?type=' + encodeURIComponent(method.label)} className="q-tool-card">
+                <div className="q-tool-number">{method.icon}</div>
+                <div className="q-tool-graphic"><MethodIllustration method={method.label}/></div>
+                <div className="q-tool-bottom"><div><h3>{method.label}</h3><p>{method.subtitle}</p></div><ArrowUpLeft size={18}/></div>
+              </Link>
             ))}
           </div>
-        )}
+        </div>
       </section>
 
-      {/* Featured recipe detail */}
-      {activeRecipe && (
-        <section id="detail" className="max-w-7xl mx-auto px-6 md:px-14 pb-24 md:pb-[120px]">
-          <div className="bg-[var(--panel-dark)] rounded-[28px] p-8 md:p-16 text-[var(--panel-dark-foreground)] grid grid-cols-1 lg:grid-cols-[0.85fr_1.15fr] gap-10 lg:gap-14">
-            <div>
-              <span className="text-[var(--accent)] font-bold text-[13px]">وصفة مُفصّلة</span>
-              <h2 className="font-heading font-black text-3xl md:text-[38px] mt-2.5 mb-5">{activeRecipe.title}</h2>
-              <p className="text-[15.5px] leading-[1.9] text-[oklch(85%_0.015_100)] mb-7">{activeRecipe.description}</p>
-              <div className="grid grid-cols-2 gap-4 mb-7">
-                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(74%_0.02_100)]">القهوة</div>
-                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.coffee_grams}غ</div>
-                </div>
-                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(74%_0.02_100)]">الماء</div>
-                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.water_ml}مل</div>
-                </div>
-                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(74%_0.02_100)]">الحرارة</div>
-                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.temperature}°م</div>
-                </div>
-                <div className="bg-[var(--panel-dark-soft)] rounded-xl p-4">
-                  <div className="text-xs text-[oklch(74%_0.02_100)]">الطحن</div>
-                  <div className="font-heading font-extrabold text-[19px]">{activeRecipe.grind_size}</div>
-                </div>
-              </div>
-              <div className="rounded-2xl overflow-hidden" style={{ aspectRatio: '16/10' }}>
-                <RecipeImage recipe={activeRecipe} />
-              </div>
-              <Link
-                href={`/recipe/${activeRecipe.slug}`}
-                className="inline-block mt-6 text-[var(--accent)] font-bold text-[14.5px] no-underline border-b border-[var(--accent)] pb-0.5"
-              >
-                عرض الوصفة كاملة
-              </Link>
-            </div>
+      <section className="q-section q-featured" id="recipes">
+        <div className="q-wrap">
+          <div className="q-section-heading"><div><span className="q-overline">02 / مختارات قَطرة</span><h2>وصفات تستحق التجربة.</h2><p>تفاصيل واضحة، كميات دقيقة، وتجربة تحضير مريحة.</p></div><Link href="/store" className="q-inline-link">تصفح المكتبة <ArrowUpLeft size={17}/></Link></div>
+          {featuredRecipes.length > 0 ? (
+            <div className="q-featured-grid">{featuredRecipes.map((recipe) => <RecipeCard key={recipe.id} recipe={recipe}/>)}</div>
+          ) : <div className="q-empty">لا توجد وصفات منشورة حاليًا.</div>}
+        </div>
+      </section>
 
-            <div className="relative ps-[46px]">
-              <div
-                className="absolute start-[15px] top-2 bottom-2 w-[2px]"
-                style={{
-                  background: 'repeating-linear-gradient(to bottom, oklch(55% 0.02 60 / 0.6) 0 6px, transparent 6px 14px)',
-                }}
-              />
-              {dripDotsShort.map((d, i) => (
-                <div
-                  key={i}
-                  className="absolute start-[10px] -top-1.5 w-3 h-3 rounded-full bg-[var(--accent)]"
-                  style={{ animation: `dripFallShort ${d.dur}s linear infinite`, animationDelay: `${d.delay}s` }}
-                />
-              ))}
-              {activeRecipe.steps.map((step, i) => (
-                <div key={i} className="relative mb-8 z-[1]">
-                  <div className="absolute -start-[46px] top-0 w-8 h-8 rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] flex items-center justify-center font-extrabold text-sm font-heading">
-                    {i + 1}
-                  </div>
-                  <div className="flex items-baseline gap-3 mb-1.5">
-                    <h4 className="font-heading font-extrabold text-lg m-0">الخطوة {i + 1}</h4>
-                  </div>
-                  <p className="text-[14.5px] leading-[1.8] text-[oklch(83%_0.015_100)] m-0">{step}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      <section className="q-section q-photo-story"><div className="q-wrap"><div className="q-photo-quote"><div className="q-photo-copy"><span className="q-overline q-overline-light">القهوة كرحلة</span><h2>وراء كل فنجان، تفاصيل تستحق أن تُروى.</h2><p>من اختيار البن إلى دقة الصب، تكتمل التجربة عندما يجتمع العلم مع الذوق.</p><a href="https://unsplash.com/photos/6VhPY27jdps" target="_blank" rel="noopener noreferrer">مصدر الصورة · Unsplash</a></div><img loading="lazy" alt="أشخاص يتشاركون أكواب القهوة" src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=84"/></div></div></section>
+
+      <section className="q-section q-learn" id="learn">
+        <div className="q-wrap q-learn-grid">
+          <div className="q-learn-intro"><span className="q-overline">03 / تعلّم وأتقن</span><h2>افهم القهوة،<br/>مو بس اتبع الوصفة.</h2><p>بعض التفاصيل الصغيرة تغيّر النتيجة. تعلّم الأساسيات بطريقة واضحة، بعيدًا عن التعقيد.</p><Link href="/academy" className="q-btn q-btn-dark">افتح الأكاديمية <BookOpen size={17}/></Link></div>
+          <div className="q-lesson-list">{lessons.map((item) => { const Icon = item.icon; return <div className="q-lesson" key={item.n}><span>{item.n}</span><div className="q-lesson-icon"><Icon size={24} strokeWidth={1.5}/></div><div><h3>{item.label}</h3><p>{item.detail}</p></div></div>; })}</div>
+        </div>
+      </section>
+
+      <section className="q-section q-simulator">
+        <div className="q-wrap q-sim-grid">
+          <div><span className="q-overline q-overline-light">04 / تجربة تفاعلية</span><h2>الموازين تتغيّر.<br/>النسبة تبقى واضحة.</h2><p>جرّب مثالًا تعليميًا على نسبة 1:16، ثم استخدم حاسبة كل وصفة لمقاديرها الفعلية.</p><Link href="/store" className="q-text-link">اختر وصفة وابدأ <ArrowUpLeft size={17}/></Link></div>
+          <div className="q-sim-panel"><div className="q-sim-top"><div><Coffee size={18}/><span>كمية البن</span></div><strong>{grams} <small>جرام</small></strong></div><input aria-label="كمية البن بالجرام" type="range" min="10" max="35" step="1" value={grams} onChange={(e) => setGrams(Number(e.target.value))}/><div className="q-sim-results"><div><Droplets size={21}/><span>كمية الماء</span><strong>{grams * 16} <small>مل</small></strong></div><div><FlaskConical size={21}/><span>نسبة التحضير</span><strong>1:16</strong></div></div><p className="q-sim-note">نموذج توضيحي؛ النسبة والوقت الفعليان يختلفان بحسب نوع الوصفة.</p></div>
+        </div>
+      </section>
+
+      <section className="q-section q-journey"><div className="q-wrap"><div className="q-section-heading"><div><span className="q-overline">من البداية للنهاية</span><h2>ثلاث خطوات لكوب أفضل.</h2></div></div><div className="q-journey-grid">{[{n:'01',title:'اختر',description:'ابحث عن الطريقة والبن المناسبين لك.',icon:Coffee},{n:'02',title:'حضّر',description:'تابع الكميات والخطوات والملاحظات.',icon:CirclePlay},{n:'03',title:'اضبط',description:'عدّل الكمية وسجّل ملاحظاتك لتحسين النتيجة.',icon:Check}].map(x => {const Icon=x.icon;return <div className="q-journey-step" key={x.n}><div className="q-journey-top"><span>{x.n}</span><Icon size={28} strokeWidth={1.3}/></div><h3>{x.title}</h3><p>{x.description}</p></div>})}</div></div></section>
+
+      <section className="q-section q-final-cta"><div className="q-wrap"><div className="q-final-box"><div className="q-final-glow" aria-hidden="true"/><span className="q-overline q-overline-light"><Sparkles size={15}/> خطوتك الأولى</span><h2>ابدأ من هنا.<br/>ودع كوبك يتحدث.</h2><p>وصفات متعددة وشرح عملي يرافقك في كل صبة.</p><Link className="q-btn q-btn-cream" href="/store">اذهب للوصفات <ArrowUpLeft size={18}/></Link></div></div></section>
     </div>
   );
 }
