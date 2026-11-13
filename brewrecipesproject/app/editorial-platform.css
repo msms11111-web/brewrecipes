@@ -1,0 +1,33 @@
+/* Shared pages: align library and recipe detail with editorial direction. */
+.q-site-header { border-bottom-color: color-mix(in srgb,var(--border) 60%,transparent); box-shadow: 0 6px 22px #10291d08; }
+.q-logo-mark { background: #234c38; color: #e8ca99; border-radius: 8px; }
+.q-nav-link { border-radius: 5px; }
+.q-nav-link:hover, .q-nav-active { background: color-mix(in srgb,var(--secondary) 80%,transparent); }
+.q-academy-hero { background: linear-gradient(270deg,#0d2b20 0%,#103125e8 45%,#173a2e99 100%), url('/images/qatra-hero.webp') center 36%/cover no-repeat; min-height: 340px; display: flex; align-items: center; }
+.q-academy-hero h1 { font-size: clamp(42px,6vw,76px); letter-spacing: -.035em; }
+.q-academy-hero p { max-width: 680px; color: #f0e6d8; }
+.q-recipe-card { border-radius: 7px; box-shadow: 0 10px 25px #142d2110; }
+.q-recipe-cover { aspect-ratio: 1.38; border-radius: 0; }
+.q-recipe-body { padding: 23px; }
+.q-recipe-type,.q-recipe-heart { border-radius: 7px; }
+.q-recipe-bottom > a { font-weight: 900; text-underline-offset: 4px; }
+.q-detail { background: var(--background); padding-top: 48px; }
+.q-detail-hero { gap: clamp(32px,5vw,85px); }
+.q-detail-image { border-radius: 7px; aspect-ratio: 1.1; box-shadow: 16px 18px 0 color-mix(in srgb,var(--secondary) 90%,transparent); }
+.q-detail-intro h1 { font-size: clamp(42px,4.5vw,70px); letter-spacing: -.035em; }
+.q-detail-chips span, .q-detail-actions button { border-radius: 6px; }
+.q-detail-stat-grid { gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 7px; overflow: hidden; }
+.q-detail-stat-grid > div { border: 0; border-radius: 0; }
+.q-step-item { border-radius: 7px; padding: 23px; }
+.q-step-circle { border-radius: 5px; }
+.q-detail-purchase, .q-detail-more, .calculator { border-radius: 8px; }
+.q-detail-actions button { cursor: pointer; }
+.q-detail .q-section { padding-block: 80px; }
+.q-footer { background: var(--card); }
+@media (max-width: 750px) {
+ .q-academy-hero { min-height: 280px; background-position: 42% center; }
+ .q-academy-hero h1 { font-size: clamp(35px,9vw,50px); }
+ .q-detail { padding-top: 24px; }
+ .q-detail-image { box-shadow: 8px 9px 0 color-mix(in srgb,var(--secondary) 90%,transparent); }
+ .q-detail-stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
