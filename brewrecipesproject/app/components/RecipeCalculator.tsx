@@ -1,76 +1,35 @@
 "use client";
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { Droplets, Coffee, Clock3 } from 'lucide-react';
 
 interface RecipeCalculatorProps {
   initialCoffeeGrams: number;
   initialWaterMl: number;
   initialBrewTime: number;
 }
-
-export default function RecipeCalculator({ 
-  initialCoffeeGrams, 
-  initialWaterMl, 
-  initialBrewTime 
-}: RecipeCalculatorProps) {
-  const [coffeeGrams, setCoffeeGrams] = useState(initialCoffeeGrams);
-  
-  const waterRatio = initialWaterMl / initialCoffeeGrams;
-  const calculatedWater = Math.round(coffeeGrams * waterRatio);
-  const calculatedTime = Math.round((initialBrewTime / initialCoffeeGrams) * coffeeGrams);
-
+function formatTime(seconds: number) {
+  if (seconds >= 3600) return (seconds / 3600).toLocaleString('ar-SA', { maximumFractionDigits: 1 }) + ' ساعة';
+  return (seconds / 60).toLocaleString('ar-SA', { maximumFractionDigits: 1 }) + ' دقيقة';
+}
+export default function RecipeCalculator({ initialCoffeeGrams, initialWaterMl, initialBrewTime }: RecipeCalculatorProps) {
+  const safeGrams = initialCoffeeGrams > 0 ? initialCoffeeGrams : 15;
+  const [coffeeGrams, setCoffeeGrams] = useState(safeGrams);
+  const low = Math.min(8, safeGrams);
+  const high = Math.max(35, safeGrams * 2);
+  const ratio = initialWaterMl / safeGrams;
+  const water = Math.round(coffeeGrams * ratio);
   return (
-    <div className="calculator p-7 rounded-3xl border border-[var(--border)]">
-      <div className="flex items-center gap-2 mb-2">
-        <h3 className="font-bold tracking-tight">حاسبة الوصفة الذكية</h3>
+    <section className="calculator p-6 rounded-3xl border border-[var(--border)]" aria-labelledby="recipe-calculator-title">
+      <h3 id="recipe-calculator-title" className="font-heading font-black text-xl mb-2">حاسبة المقادير</h3>
+      <p className="text-sm text-[var(--muted-foreground)] leading-7 mb-6">اضبط كمية البن، وتتغيّر كمية الماء حسب نسبة هذه الوصفة.</p>
+      <div className="flex justify-between gap-4 items-center mb-3"><label htmlFor="coffee-grams" className="flex gap-2 items-center"><Coffee size={17}/> البن</label><strong>{coffeeGrams} جرام</strong></div>
+      <input id="coffee-grams" type="range" min={low} max={high} step="1" value={coffeeGrams} onChange={(e) => setCoffeeGrams(Number(e.target.value))} className="w-full accent-[var(--accent)]"/>
+      <div className="grid grid-cols-2 gap-3 mt-6">
+        <div className="rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4"><Droplets className="mb-3 text-[var(--accent)]" size={21}/><span className="block text-xs text-[var(--muted-foreground)]">الماء</span><strong className="text-3xl tabular-nums">{water}</strong><span className="text-xs"> مل</span></div>
+        <div className="rounded-2xl bg-[var(--card)] border border-[var(--border)] p-4"><Clock3 className="mb-3 text-[var(--accent)]" size={21}/><span className="block text-xs text-[var(--muted-foreground)]">زمن الوصفة الأصلي</span><strong className="block text-lg">{formatTime(initialBrewTime)}</strong></div>
       </div>
-      <p className="text-xs text-[var(--muted-foreground)] mb-6">
-        غيّر كمية البن وسيتم تحديث كمية الماء والوقت تلقائياً
-      </p>
-
-      <div className="mb-8">
-        <div className="flex justify-between text-sm mb-2">
-          <span>كمية البن</span>
-          <span className="font-mono font-bold text-lg tabular-nums">{coffeeGrams} <span className="text-xs">جرام</span></span>
-        </div>
-        <input 
-          type="range" 
-          min="8" 
-          max="35" 
-          step="1"
-          value={coffeeGrams} 
-          onChange={(e) => setCoffeeGrams(parseInt(e.target.value))}
-          className="w-full accent-[var(--accent)]"
-        />
-        <div className="flex justify-between text-[10px] text-[var(--foreground)]/50 mt-1">
-          <span>8g</span>
-          <span>35g</span>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-[var(--card)] rounded-2xl p-5 text-center border border-[var(--border)]">
-          <div className="text-[var(--accent)] text-xs tracking-widest mb-1">الماء</div>
-          <div className="text-4xl font-bold tabular-nums tracking-tighter text-[var(--foreground)]">
-            {calculatedWater}
-          </div>
-          <div className="text-xs text-[var(--muted-foreground)]">مل</div>
-        </div>
-        
-        <div className="bg-[var(--card)] rounded-2xl p-5 text-center border border-[var(--border)]">
-          <div className="text-[var(--accent)] text-xs tracking-widest mb-1">وقت الاستخلاص</div>
-          <div className="text-4xl font-bold tabular-nums tracking-tighter text-[var(--foreground)]">
-            {calculatedTime}
-          </div>
-          <div className="text-xs text-[var(--muted-foreground)]">ثانية</div>
-        </div>
-      </div>
-
-      <div className="mt-6 text-center">
-        <p className="text-xs text-[var(--muted-foreground)]">
-          النسبة الأصلية: 1 : {waterRatio.toFixed(1)}
-        </p>
-      </div>
-    </div>
+      <p className="text-xs text-[var(--muted-foreground)] leading-6 mt-4">النسبة الأصلية 1:{ratio.toFixed(1)}. الزمن تقديري للكمية الأصلية؛ لا يزيد آليًا بنفس نسبة زيادة البن، ويحتاج ضبطًا بحسب الطحن والأداة.</p>
+    </section>
   );
 }

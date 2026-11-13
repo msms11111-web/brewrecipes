@@ -1,257 +1,98 @@
 "use client";
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useLanguage } from './LanguageProvider';
-import RecipeCalculator from './RecipeCalculator';
-import { useAppStore, useHydrated } from '@/lib/app-store';
-import {
-  ArrowRight, Play, Heart, Share2, Star,
-  Coffee, ThermometerSun, Clock, CheckCircle2
-} from 'lucide-react';
+import { ArrowRight, Share2, Heart, Printer, Coffee, Droplets, Thermometer, Clock3, CircleCheck, CirclePlay, Check, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Recipe } from '@/app/types';
+import { useAppStore, useHydrated } from '@/lib/app-store';
 import RecipeImage from './RecipeImage';
+import RecipeCalculator from './RecipeCalculator';
 
-function formatBrewTime(seconds: number): string {
-  if (seconds >= 3600) return `${Math.round(seconds / 3600)} ساعة`;
-  if (seconds >= 60) {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return secs ? `${mins} د ${secs} ث` : `${mins} دقائق`;
-  }
-  return `${seconds} ثانية`;
+function duration(seconds: number) {
+  if (seconds >= 3600) return (seconds / 3600).toLocaleString('ar-SA', {maximumFractionDigits: 1}) + ' ساعة';
+  return Math.round(seconds / 60) + ' دقيقة';
 }
-
 export default function RecipeDetailClient({ recipe }: { recipe: Recipe }) {
-  const { t } = useLanguage();
   const router = useRouter();
   const hydrated = useHydrated();
+  const user = useAppStore(s=>s.user);
+  const favorites = useAppStore(s=>s.favorites);
+  const purchases = useAppStore(s=>s.purchases);
+  const subscription = useAppStore(s=>s.subscription);
+  const toggleFavorite = useAppStore(s=>s.toggleFavorite);
+  const purchase = useAppStore(s=>s.purchase);
+  const [checked, setChecked] = useState<number[]>([]);
   const [showVideo, setShowVideo] = useState(false);
-
-  const user = useAppStore((s) => s.user);
-  const favorites = useAppStore((s) => s.favorites);
-  const purchases = useAppStore((s) => s.purchases);
-  const subscription = useAppStore((s) => s.subscription);
-  const toggleFavorite = useAppStore((s) => s.toggleFavorite);
-  const purchase = useAppStore((s) => s.purchase);
-
   const favorited = hydrated && favorites.includes(recipe.slug);
   const owned = hydrated && (purchases.includes(recipe.slug) || subscription !== 'none');
-
-  const handleBuy = () => {
-    if (!user) {
-      toast.error('سجل الدخول أولاً لإتمام الشراء');
-      router.push('/login');
-      return;
-    }
-    if (owned) {
-      toast.info('هذه الوصفة ملكك بالفعل');
-      return;
-    }
+  const totalSteps = recipe.steps.length;
+  const completion = totalSteps ? Math.round(checked.length / totalSteps * 100) : 0;
+  const toggleStep = (n:number) => setChecked(previous=>previous.includes(n)?previous.filter(i=>i!==n):[...previous,n]);
+  function handleBuy() {
+    if (!user) { toast.error('سجّل الدخول أولًا'); router.push('/login'); return; }
+    if (owned) { toast.info('هذه الوصفة موجودة في حسابك'); return; }
     purchase(recipe.slug);
-    toast.success('تم شراء الوصفة بنجاح! (وضع تجريبي)', {
-      description: 'أُضيفت إلى مشترياتك في ملفك الشخصي. عند تفعيل الدفع سيتم التوجيه إلى Stripe.',
-    });
-  };
-
-  const handleFavorite = () => {
-    toggleFavorite(recipe.slug);
-    toast.success(favorited ? 'أُزيلت من المفضلة' : 'أُضيفت إلى المفضلة');
-  };
-
-  const handleShare = async () => {
-    const url = window.location.href;
+    toast.success('تمت إضافة الوصفة لمشترياتك التجريبية، ولم يتم تحصيل أي مبلغ.');
+  }
+  function handleFavorite() { toggleFavorite(recipe.slug); toast.success(favorited?'أُزيلت من المفضلة':'أُضيفت إلى المفضلة'); }
+  async function handleShare() {
     try {
-      if (navigator.share) {
-        await navigator.share({ title: recipe.title, url });
-      } else {
-        await navigator.clipboard.writeText(url);
-        toast.success('تم نسخ رابط الوصفة');
-      }
-    } catch {
-      // المستخدم ألغى المشاركة
-    }
-  };
-
-  return (
-    <div className="max-w-5xl mx-auto px-6 py-10">
-      <Link href="/store" className="inline-flex items-center gap-2 text-sm mb-8 hover:text-[var(--accent)] transition-colors">
-        <ArrowRight className="w-4 h-4" /> العودة إلى المتجر
-      </Link>
-
-      <div className="grid lg:grid-cols-5 gap-10">
-        {/* Image + Info */}
-        <div className="lg:col-span-3">
-          <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[16/10] mb-8">
-            <RecipeImage src={recipe.image_url} alt={recipe.title} />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/70" />
-
-            <div className="absolute bottom-0 p-8 text-white">
-              <div className="uppercase tracking-[4px] text-xs mb-2 text-[var(--accent)]">{recipe.coffee_type} • {recipe.roast_level}</div>
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tighter mb-3">{recipe.title}</h1>
-              <p className="text-xl text-white/90">{recipe.roastery} — {recipe.origin_country}</p>
-            </div>
-
-            {recipe.video_url && (
-              <button
-                onClick={() => setShowVideo(true)}
-                className="absolute top-8 left-8 flex items-center gap-3 bg-white/95 hover:bg-white text-[#1C1C1C] px-6 py-3 rounded-2xl font-semibold text-sm shadow-xl active:scale-95 transition-all"
-              >
-                <Play className="w-4 h-4" /> شاهد الفيديو
-              </button>
-            )}
-          </div>
-
-          {/* Tasting Notes */}
-          <div className="mb-10">
-            <div className="uppercase text-xs tracking-[3px] text-[var(--accent)] mb-3 font-semibold">{t('tastingNotes')}</div>
-            <div className="flex flex-wrap gap-2">
-              {recipe.tasting_notes.map((note, index) => (
-                <div key={index} className="px-5 py-2 rounded-2xl bg-[var(--secondary)] text-sm font-medium">
-                  {note}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Description */}
-          <div className="prose prose-lg dark:prose-invert max-w-none text-[var(--foreground)]">
-            <p className="text-lg leading-relaxed">{recipe.description}</p>
-          </div>
-        </div>
-
-        {/* Sidebar: Purchase + Specs + Calculator */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Purchase Card */}
-          <div className="card p-7 rounded-3xl">
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <div className="text-6xl font-bold tracking-tighter text-[var(--foreground)]">{recipe.price}</div>
-                <div className="text-sm -mt-1 text-[var(--muted-foreground)]">ر.س (شراء مرة واحدة)</div>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  onClick={handleFavorite}
-                  aria-label={favorited ? 'إزالة من المفضلة' : 'إضافة للمفضلة'}
-                  className="p-3 rounded-2xl border border-[var(--border)] hover:bg-[var(--secondary)]"
-                >
-                  <Heart className={`w-5 h-5 ${favorited ? 'fill-red-500 text-red-500' : ''}`} />
-                </button>
-                <button
-                  onClick={handleShare}
-                  aria-label="مشاركة"
-                  className="p-3 rounded-2xl border border-[var(--border)] hover:bg-[var(--secondary)]"
-                >
-                  <Share2 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
-
-            {owned ? (
-              <div className="flex items-center justify-center gap-2 w-full py-4 mb-3 rounded-full bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 font-semibold">
-                <CheckCircle2 className="w-5 h-5" /> تمتلك هذه الوصفة
-              </div>
-            ) : (
-              <button onClick={handleBuy} className="btn btn-gold w-full py-4 text-lg mb-3">
-                {t('buyNow')} — {recipe.price} ر.س
-              </button>
-            )}
-
-            <Link href="/subscriptions" className="btn btn-secondary w-full py-4 text-sm">
-              أو اشترك شهرياً (٢٩ ر.س) للوصول الكامل
-            </Link>
-
-            <div className="text-center text-xs text-[var(--muted-foreground)] mt-4">
-              وصول فوري • حاسبة ذكية • تحديثات مستمرة
-            </div>
-          </div>
-
-          {/* Specs */}
-          <div className="card p-7 rounded-3xl">
-            <h3 className="font-semibold mb-5 flex items-center gap-2"><Coffee className="w-4 h-4" /> مواصفات الوصفة</h3>
-
-            <div className="space-y-4 text-sm">
-              {[
-                [t('origin'), recipe.origin_country],
-                [t('roastery'), recipe.roastery],
-                [t('roastLevel'), recipe.roast_level],
-                [t('grindSize'), recipe.grind_size],
-              ].map(([label, value]) => (
-                <div key={label} className="flex justify-between py-2 border-b border-[var(--border)]">
-                  <span className="text-[var(--muted-foreground)]">{label}</span>
-                  <span className="font-medium">{value}</span>
-                </div>
-              ))}
-              <div className="flex justify-between py-2 border-b border-[var(--border)]">
-                <span className="text-[var(--muted-foreground)] flex items-center gap-1.5">
-                  <ThermometerSun className="w-4 h-4" /> {t('temperature')}
-                </span>
-                <span className="font-medium">{recipe.temperature}°م</span>
-              </div>
-              <div className="flex justify-between py-2">
-                <span className="text-[var(--muted-foreground)] flex items-center gap-1.5">
-                  <Clock className="w-4 h-4" /> {t('brewTime')}
-                </span>
-                <span className="font-medium">{formatBrewTime(recipe.brew_time)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Smart Calculator */}
-          <RecipeCalculator
-            initialCoffeeGrams={recipe.coffee_grams}
-            initialWaterMl={recipe.water_ml}
-            initialBrewTime={recipe.brew_time}
-          />
-
-          {recipe.rating != null && (
-            <div className="card p-6 rounded-3xl flex items-center justify-center gap-3">
-              <Star className="w-6 h-6 fill-[var(--accent)] text-[var(--accent)]" />
-              <span className="text-2xl font-bold">{recipe.rating}</span>
-              <span className="text-sm text-[var(--muted-foreground)]">({recipe.reviewsCount} تقييم)</span>
-            </div>
-          )}
+      if (navigator.share) await navigator.share({title:recipe.title,url:window.location.href});
+      else {await navigator.clipboard.writeText(window.location.href); toast.success('تم نسخ رابط الوصفة');}
+    } catch { /* user dismissed share */ }
+  }
+  return <div className="q-detail">
+    <div className="q-wrap"><Link href="/store" className="q-detail-back"><ArrowRight size={16}/> جميع الوصفات</Link></div>
+    <header className="q-wrap q-detail-hero">
+      <div className="q-detail-image"><RecipeImage src={recipe.image_url} alt={recipe.title}/></div>
+      <div className="q-detail-intro">
+        <div className="q-overline">وصفة قهوة مختصة · {recipe.coffee_type}</div>
+        <h1>{recipe.title}</h1>
+        <p className="q-detail-lead">{recipe.description}</p>
+        <div className="q-detail-chips"><span>{recipe.origin_country}</span><span>{recipe.roast_level}</span><span>{recipe.roastery}</span></div>
+        <div className="q-detail-actions">
+          <button type="button" onClick={handleFavorite} aria-pressed={favorited}><Heart fill={favorited?'#B55C4A':'none'} size={18}/>{favorited?'محفوظة':'حفظ'}</button>
+          <button type="button" onClick={handleShare}><Share2 size={18}/> مشاركة</button>
+          <button type="button" onClick={()=>window.print()}><Printer size={18}/> طباعة</button>
+          {recipe.video_url && <button type="button" onClick={()=>setShowVideo(true)}><CirclePlay size={18}/> الفيديو</button>}
         </div>
       </div>
-
-      {/* Steps */}
-      <div className="mt-16">
-        <h2 className="text-4xl tracking-tighter font-bold mb-8 flex items-center gap-3">
-          {t('steps')}
-          <span className="text-base align-middle px-4 py-1 rounded-full bg-[var(--secondary)] text-[var(--foreground)] font-mono tracking-widest text-xs">STEP BY STEP</span>
-        </h2>
-
-        <div className="space-y-4 max-w-3xl">
-          {recipe.steps.map((step, index) => (
-            <div key={index} className="flex gap-5 bg-[var(--card)] p-6 rounded-3xl border border-[var(--border)]">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] flex items-center justify-center text-sm font-bold">
-                {index + 1}
-              </div>
-              <p className="pt-1 text-lg leading-relaxed text-[var(--foreground)]">{step}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Video Modal */}
-      {showVideo && recipe.video_url && (
-        <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-6" onClick={() => setShowVideo(false)}>
-          <div className="w-full max-w-4xl" onClick={(e) => e.stopPropagation()}>
-            <div className="aspect-video bg-black rounded-2xl overflow-hidden">
-              <iframe
-                width="100%"
-                height="100%"
-                src={recipe.video_url}
-                title="فيديو التحضير"
-                allowFullScreen
-              />
-            </div>
-            <button onClick={() => setShowVideo(false)} className="mt-4 text-white/70 hover:text-white text-sm">إغلاق الفيديو</button>
-          </div>
-        </div>
-      )}
+    </header>
+    <div className="q-wrap q-detail-stat-grid" aria-label="مقادير ومعلومات الوصفة">
+      <div><Coffee size={20}/><span>البن</span><strong>{recipe.coffee_grams} جرام</strong></div>
+      <div><Droplets size={20}/><span>الماء</span><strong>{recipe.water_ml} مل</strong></div>
+      <div><Thermometer size={20}/><span>الحرارة</span><strong>{recipe.temperature}°م</strong></div>
+      <div><Clock3 size={20}/><span>الوقت المرجعي</span><strong>{duration(recipe.brew_time)}</strong></div>
     </div>
-  );
+    <section className="q-section"><div className="q-wrap q-detail-content">
+      <div>
+        <div className="q-detail-section-heading"><span className="q-overline">خطوة بخطوة</span><h2>دليل التحضير</h2><p>اتبع التعليمات حسب الوصفة، وعلّم على كل خطوة أنجزتها. التأشير لهذه الجلسة فقط.</p></div>
+        <div className="q-progress-top"><span>{checked.length} من {totalSteps} خطوات</span><strong>{completion}%</strong></div>
+        <div className="q-progress"><div style={{width:completion+'%'}}/></div>
+        <div className="q-step-list">
+          {recipe.steps.map((step,index)=>{
+            const done=checked.includes(index);
+            return <button key={index} type="button" onClick={()=>toggleStep(index)} className={'q-step-item '+(done?'q-step-done':'')} aria-pressed={done}>
+              <span className="q-step-circle">{done?<Check size={18}/>:String(index+1).padStart(2,'0')}</span>
+              <span><strong>الخطوة {index+1}</strong><span>{step}</span></span>
+              <CircleCheck className="q-step-check" size={22}/>
+            </button>;
+          })}
+        </div>
+        {completion===100 && <div className="q-done"><Sparkles size={20}/> اكتملت الخطوات! دوّن ملاحظات التذوق لتطوير كوبك القادم.</div>}
+        <div className="q-detail-tasting"><h2>النكهات المتوقعة</h2><p>قد تختلف النكهات حسب البن والطحن والماء.</p><div>{recipe.tasting_notes.map(note=><span key={note}>{note}</span>)}</div></div>
+      </div>
+      <aside className="q-detail-sidebar">
+        <RecipeCalculator initialCoffeeGrams={recipe.coffee_grams} initialWaterMl={recipe.water_ml} initialBrewTime={recipe.brew_time}/>
+        <div className="q-detail-purchase"><span className="q-overline q-overline-light">الوصول للوصفة</span><div className="q-detail-price">{recipe.price === 0 ? 'مجاني' : recipe.price + ' ر.س'}</div><p>الدفع والاشتراك ما زالا تجريبيين. أي نقرة شراء هنا لا تحصّل مبلغًا فعليًا.</p>
+          {owned ? <div className="q-owned"><CircleCheck size={18}/> موجودة في حسابك</div> : recipe.price > 0 ? <button type="button" className="q-btn q-btn-cream w-full" onClick={handleBuy}>إضافة تجريبية للوصفة</button> : <div className="q-owned">وصفة مجانية</div>}
+          <Link href="/subscriptions" className="q-detail-sub">استعرض خطط الاشتراك</Link>
+        </div>
+        <div className="q-detail-more"><strong>مواصفات إضافية</strong><dl><div><dt>الطحن</dt><dd>{recipe.grind_size}</dd></div><div><dt>التحميص</dt><dd>{recipe.roast_level}</dd></div><div><dt>المحمصة</dt><dd>{recipe.roastery}</dd></div></dl></div>
+      </aside>
+    </div></section>
+    {showVideo && recipe.video_url && <div className="q-video-backdrop" role="presentation" onClick={()=>setShowVideo(false)}><div className="q-video-modal" role="dialog" aria-modal="true" aria-label="فيديو تحضير الوصفة" onClick={e=>e.stopPropagation()}><button type="button" className="q-video-close" onClick={()=>setShowVideo(false)}>إغلاق ✕</button><div className="aspect-video"><iframe title="فيديو تحضير الوصفة" src={recipe.video_url} width="100%" height="100%" allowFullScreen/></div></div></div>}
+  </div>;
 }
