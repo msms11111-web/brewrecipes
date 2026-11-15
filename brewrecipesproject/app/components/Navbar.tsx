@@ -33,7 +33,7 @@ export default function Navbar() {
   const linkClass = (href:string) => 'q-nav-link' + (pathname === href ? ' q-nav-active' : '');
   return <header className="q-site-header">
     <div className="q-wrap q-nav-row">
-      <Link href="/" aria-label="قَطرة - الرئيسية" className="q-logo"><span className="q-logo-mark">✦</span><span>قَطرة<span className="text-[var(--accent)]">.</span></span></Link>
+      <Link href="/" aria-label="قَطرة - الرئيسية" className="q-logo q-signature-logo"><svg className="q-signature-mark" viewBox="0 0 76 88" fill="none" aria-hidden="true"><path d="M39 4C33 19 12 38 12 54C12 72 24 83 39 83C56 83 67 72 67 55C67 38 46 17 39 4Z" stroke="currentColor" strokeWidth="3"/><path d="M38 20C34 32 22 44 22 55C22 68 30 73 38 73C46 73 52 69 53 59" stroke="currentColor" strokeWidth="2" opacity=".65"/><circle cx="47" cy="49" r="11" fill="currentColor"/></svg><span>قَطرة<small>QATRA SIGNATURE</small></span></Link>
       <nav className="q-desktop-nav" aria-label="التصفح الرئيسي">{links.map(link=><Link key={link.href} className={linkClass(link.href)} href={link.href}>{link.label}</Link>)}{currentUser?.role==='admin'&&<Link href="/admin" className={linkClass('/admin')}>الإدارة</Link>}</nav>
       <div className="q-nav-actions">
         <button type="button" className="q-icon-btn q-lang-switch" onClick={()=>setLanguage(language==='ar'?'en':'ar')} aria-label="تبديل اللغة">{language.toUpperCase()}</button>
