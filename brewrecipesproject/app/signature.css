@@ -151,6 +151,9 @@
 .sg-outro-actions{justify-content:center}
 .sg-outro .sg-underlink{color:#edd3af}
 .sg .sg-underlink,.sg .sg-button,.sg a,.sg button{touch-action:manipulation}
+.sg-home-hero-link{display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:10px 14px;border:1px solid #d7b78488;border-radius:50px;color:#efd4a9;background:#041e15ab;font:800 11px ui-sans-serif,sans-serif;letter-spacing:.1em;transition:background .25s ease,transform .25s ease;direction:ltr}
+.sg-home-hero-link span{font:700 12px var(--font-arabic),sans-serif;letter-spacing:normal;direction:rtl}
+.sg-home-hero-link:hover{background:#30523a;transform:translateY(-2px)}
 @media(max-width:1020px){
 .sg-container{width:min(100% - 48px,1320px)}
 .sg-hero-grid{min-height:640px}
