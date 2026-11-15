@@ -38,6 +38,7 @@ export default function HomeClient({ featuredRecipes, allRecipes }: { featuredRe
               <Link className="ed-button ed-button-ghost" href="/xbloom">وصفات xBloom <MoveUpRight size={17}/></Link>
             </div>
             <div className="ed-hero-footnote"><span className="ed-hero-stroke"/>من البن إلى آخر قطرة</div>
+            <Link href="/signature" className="sg-home-hero-link">QATRA SIGNATURE <span>اكتشف عالم قَطرة الجديد</span> <ArrowUpLeft size={17}/></Link>
           </div>
         </div>
         <div className="ed-hero-edge" aria-hidden="true"><span>THE ART OF BREWING</span><span>01 / 2026</span></div>
