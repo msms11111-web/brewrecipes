@@ -9,8 +9,8 @@ export const metadata: Metadata = {
 
 export default function XbloomPage() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-      <header className="mb-10 max-w-3xl">
+    <div className="sg-xbloom max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <header className="sg-xbloom-head mb-10 max-w-3xl">
         <div className="text-[var(--accent)] text-xs tracking-[3px] font-semibold">XBLOOM STUDIO</div>
         <h1 className="text-5xl md:text-6xl tracking-tighter font-bold text-[var(--foreground)] mt-2">وصفات xBloom</h1>
         <p className="text-lg leading-relaxed text-[var(--muted-foreground)] mt-3">
@@ -24,7 +24,7 @@ export default function XbloomPage() {
           <article
             key={r.slug}
             id={r.slug}
-            className="rounded-3xl border border-[var(--border)] bg-[var(--card)] overflow-hidden flex flex-col"
+            className="sg-xbloom-card rounded-3xl border border-[var(--border)] bg-[var(--card)] overflow-hidden flex flex-col"
           >
             <a href={`/images/xbloom/${r.slug}.png`} target="_blank" rel="noopener" className="block bg-[var(--panel-dark)]">
               <img
