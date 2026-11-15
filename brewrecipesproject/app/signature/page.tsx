@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
-  ArrowUpLeft, ArrowLeft, Coffee, Droplets, Flame, Leaf,
-  BookOpen, Orbit, MoveUpRight, Layers3, MousePointer2,
+  ArrowUpLeft, ArrowLeft, Coffee, Droplets,
+  Orbit, MoveUpRight, Layers3, MousePointer2,
   Sparkles, CircleDot, Thermometer, Clock3, CheckCircle2,
 } from 'lucide-react';
 import SignatureExperience from '../components/SignatureExperience';
