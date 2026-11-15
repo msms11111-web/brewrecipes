@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Check, Crown, Sparkles, ArrowUpLeft, ShieldCheck, Coffee, CircleCheck2 } from 'lucide-react';
+import { Check, Crown, Sparkles, ArrowUpLeft, ShieldCheck, Coffee, CircleCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppStore, useHydrated } from '@/lib/app-store';
 
@@ -45,7 +45,7 @@ export default function SubscriptionsPage() {
       <section className="sg-membership-content">
         <div className="sg-container">
           {active && <div className="sg-active-plan">
-            <span><CircleCheck2 size={20}/> خطتك التجريبية النشطة: <strong>{subscription==='monthly'?'الشهرية':'السنوية'}</strong>{subscriptionEndsAt&&<small> · حتى {new Date(subscriptionEndsAt).toLocaleDateString('ar-SA')}</small>}</span>
+            <span><CircleCheck size={20}/> خطتك التجريبية النشطة: <strong>{subscription==='monthly'?'الشهرية':'السنوية'}</strong>{subscriptionEndsAt&&<small> · حتى {new Date(subscriptionEndsAt).toLocaleDateString('ar-SA')}</small>}</span>
             <button type="button" onClick={handleCancel}>إلغاء التجربة</button>
           </div>}
           <div className="sg-plan-head"><span className="sg-eyebrow">CHOOSE YOUR RITUAL</span><h2>اختر المسار المناسب لك.</h2><p>الأسعار المعروضة نموذجية وليست عملية شراء فعلية. كل خطة يمكن تفعيلها تجريبيًا دون خصم.</p></div>
