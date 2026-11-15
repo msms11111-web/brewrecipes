@@ -2,141 +2,79 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Check, Crown, Sparkles } from 'lucide-react';
+import { Check, Crown, Sparkles, ArrowUpLeft, ShieldCheck, Coffee, CircleCheck } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAppStore, useHydrated } from '@/lib/app-store';
 
 const features = [
-  'وصول كامل لكل الوصفات الحالية والجديدة',
-  'حاسبة الوصفة الذكية لكل وصفة',
-  'وصفات جديدة كل أسبوع',
-  'تحديثات مستمرة على الوصفات',
-  'إلغاء في أي وقت بدون التزامات',
+  'الوصول إلى الوصفات المتاحة في المكتبة',
+  'حاسبة ماء وبن لكل وصفة',
+  'عرض خطوات التحضير والمعلومات',
+  'إضافة الوصفات إلى المفضلة',
 ];
 
 export default function SubscriptionsPage() {
   const router = useRouter();
   const hydrated = useHydrated();
-  const user = useAppStore((s) => s.user);
-  const subscription = useAppStore((s) => s.subscription);
-  const subscriptionEndsAt = useAppStore((s) => s.subscriptionEndsAt);
-  const subscribe = useAppStore((s) => s.subscribe);
-  const cancelSubscription = useAppStore((s) => s.cancelSubscription);
-
-  const handleSubscribe = (plan: 'monthly' | 'yearly') => {
-    if (!user) {
-      toast.error('سجل الدخول أولاً لبدء الاشتراك');
-      router.push('/login');
-      return;
-    }
-    subscribe(plan);
-    toast.success(plan === 'monthly' ? 'تم تفعيل الاشتراك الشهري! (وضع تجريبي)' : 'تم تفعيل الاشتراك السنوي! (وضع تجريبي)', {
-      description: 'الآن لديك وصول كامل لكل الوصفات. عند تفعيل الدفع سيتم التوجيه إلى Stripe.',
-    });
-  };
-
-  const handleCancel = () => {
-    cancelSubscription();
-    toast.info('تم إلغاء الاشتراك');
-  };
-
+  const user = useAppStore(s => s.user);
+  const subscription = useAppStore(s => s.subscription);
+  const subscriptionEndsAt = useAppStore(s => s.subscriptionEndsAt);
+  const subscribe = useAppStore(s => s.subscribe);
+  const cancelSubscription = useAppStore(s => s.cancelSubscription);
   const active = hydrated && subscription !== 'none';
 
+  const handleSubscribe = (plan: 'monthly' | 'yearly') => {
+    if (!user) { toast.error('سجّل الدخول أولًا لتجربة الاشتراك'); router.push('/login'); return; }
+    subscribe(plan);
+    toast.success('فُعّلت خطة تجريبية محليًا — لم يتم سحب أي مبلغ.');
+  };
+  const handleCancel = () => { cancelSubscription(); toast.info('تم إلغاء الاشتراك التجريبي'); };
+
   return (
-    <div className="max-w-5xl mx-auto px-6 py-16">
-      <div className="text-center mb-14">
-        <div className="text-[var(--accent)] text-xs tracking-[4px] font-semibold mb-3">MEMBERSHIP</div>
-        <h1 className="text-6xl tracking-tighter font-bold mb-4">الاشتراكات</h1>
-        <p className="text-xl text-[var(--muted-foreground)] max-w-2xl mx-auto">
-          وصول غير محدود لكل وصفات القهوة المختصة، بدل شراء كل وصفة على حدة
-        </p>
-      </div>
-
-      {active && (
-        <div className="max-w-2xl mx-auto mb-12 card p-6 rounded-3xl flex items-center justify-between gap-4 border-2 border-[var(--accent)]">
-          <div>
-            <div className="font-bold text-lg flex items-center gap-2">
-              <Crown className="w-5 h-5 text-[var(--accent)]" />
-              اشتراكك النشط: {subscription === 'monthly' ? 'الخطة الشهرية' : 'الخطة السنوية'}
-            </div>
-            {subscriptionEndsAt && (
-              <p className="text-sm text-[var(--muted-foreground)] mt-1">
-                يتجدد في {new Date(subscriptionEndsAt).toLocaleDateString('ar-SA')}
-              </p>
-            )}
-          </div>
-          <button onClick={handleCancel} className="btn btn-secondary text-sm text-red-600 border-red-200">
-            إلغاء الاشتراك
-          </button>
+    <main className="sg-membership">
+      <header className="sg-membership-hero">
+        <div className="sg-container sg-membership-hero-inner">
+          <span className="sg-eyebrow">QATRA / MEMBERSHIP EXPERIENCE</span>
+          <div className="sg-membership-emblem"><Crown size={37} strokeWidth={1.2}/></div>
+          <h1>مساحة أوسع<br/><em>لعالم من التفاصيل.</em></h1>
+          <p>جرّب تجربة العضوية، واطّلع على الأسعار النموذجية ومزاياها. الدفع الحقيقي غير متاح حاليًا.</p>
+          <span className="sg-membership-demo"><ShieldCheck size={16}/> وضع تجريبي — لا يتم تحصيل مبالغ</span>
         </div>
-      )}
+      </header>
 
-      <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-        {/* Monthly */}
-        <div className="card p-10 rounded-3xl flex flex-col">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold tracking-tight">الخطة الشهرية</h2>
-            <p className="text-sm text-[var(--muted-foreground)]">مرونة كاملة، شهر بشهر</p>
+      <section className="sg-membership-content">
+        <div className="sg-container">
+          {active && <div className="sg-active-plan">
+            <span><CircleCheck size={20}/> خطتك التجريبية النشطة: <strong>{subscription==='monthly'?'الشهرية':'السنوية'}</strong>{subscriptionEndsAt&&<small> · حتى {new Date(subscriptionEndsAt).toLocaleDateString('ar-SA')}</small>}</span>
+            <button type="button" onClick={handleCancel}>إلغاء التجربة</button>
+          </div>}
+          <div className="sg-plan-head"><span className="sg-eyebrow">CHOOSE YOUR RITUAL</span><h2>اختر المسار المناسب لك.</h2><p>الأسعار المعروضة نموذجية وليست عملية شراء فعلية. كل خطة يمكن تفعيلها تجريبيًا دون خصم.</p></div>
+          <div className="sg-plan-grid">
+            <article className="sg-plan">
+              <span className="sg-plan-label">MONTHLY ACCESS</span>
+              <div className="sg-plan-icon"><Coffee size={30} strokeWidth={1.3}/></div>
+              <h3>العضوية الشهرية</h3>
+              <p>خيار مرن للتجربة والتعلّم.</p>
+              <div className="sg-plan-price"><strong>٢٩</strong><span>ر.س / شهريًا</span></div>
+              <div className="sg-plan-line"/>
+              <ul>{features.map(f=><li key={f}><Check size={16}/>{f}</li>)}</ul>
+              <button type="button" className="sg-plan-action" disabled={hydrated&&subscription==='monthly'} onClick={()=>handleSubscribe('monthly')}>{hydrated&&subscription==='monthly'?'الخطة الحالية':'تجربة الاشتراك الشهري'} <ArrowUpLeft size={18}/></button>
+            </article>
+            <article className="sg-plan sg-plan-premium">
+              <div className="sg-plan-flag"><Sparkles size={15}/> الأكثر توفيرًا في النموذج</div>
+              <span className="sg-plan-label">YEARLY ACCESS</span>
+              <div className="sg-plan-icon"><Crown size={30} strokeWidth={1.3}/></div>
+              <h3>العضوية السنوية</h3>
+              <p>تجربة ممتدة ضمن نظام قَطرة.</p>
+              <div className="sg-plan-price"><strong>٢٧٨</strong><span>ر.س / سنويًا</span></div>
+              <div className="sg-plan-line"/>
+              <ul>{features.map(f=><li key={f}><Check size={16}/>{f}</li>)}<li><Check size={16}/> أقل بنحو 20% من تكلفة 12 شهرًا</li></ul>
+              <button type="button" className="sg-plan-action" disabled={hydrated&&subscription==='yearly'} onClick={()=>handleSubscribe('yearly')}>{hydrated&&subscription==='yearly'?'الخطة الحالية':'تجربة الاشتراك السنوي'} <ArrowUpLeft size={18}/></button>
+            </article>
           </div>
-          <div className="mb-8">
-            <span className="text-6xl font-bold tracking-tighter">٢٩</span>
-            <span className="text-lg text-[var(--muted-foreground)]"> ر.س / شهرياً</span>
-          </div>
-          <ul className="space-y-3 mb-10 flex-1">
-            {features.map((f) => (
-              <li key={f} className="flex items-start gap-3 text-sm">
-                <Check className="w-5 h-5 text-[var(--accent)] flex-shrink-0" /> {f}
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={() => handleSubscribe('monthly')}
-            disabled={hydrated && subscription === 'monthly'}
-            className="btn btn-secondary w-full py-4 disabled:opacity-50"
-          >
-            {hydrated && subscription === 'monthly' ? 'خطتك الحالية' : 'اشترك شهرياً'}
-          </button>
+          <p className="sg-plan-disclaimer">المصادقة والاشتراكات والدفع في المشروع ما زالت بوضع تجريبي. هذه الواجهة لا تجمع بيانات بطاقات مصرفية ولا تُجري مدفوعات. راجع <Link href="/store">الوصفات المتاحة</Link> مباشرة.</p>
         </div>
-
-        {/* Yearly */}
-        <div className="card p-10 rounded-3xl flex flex-col relative border-2 border-[var(--accent)]">
-          <div className="absolute -top-4 right-8 px-4 py-1.5 rounded-full bg-[var(--accent)] text-[oklch(99%_0.005_70)] text-xs font-bold flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" /> وفّر ٢٠٪
-          </div>
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold tracking-tight">الخطة السنوية</h2>
-            <p className="text-sm text-[var(--muted-foreground)]">أفضل قيمة لعشاق القهوة</p>
-          </div>
-          <div className="mb-8">
-            <span className="text-6xl font-bold tracking-tighter">٢٧٨</span>
-            <span className="text-lg text-[var(--muted-foreground)]"> ر.س / سنوياً</span>
-            <div className="text-xs text-[var(--accent)] mt-1">أي ما يعادل ٢٣ ر.س شهرياً فقط</div>
-          </div>
-          <ul className="space-y-3 mb-10 flex-1">
-            {features.map((f) => (
-              <li key={f} className="flex items-start gap-3 text-sm">
-                <Check className="w-5 h-5 text-[var(--accent)] flex-shrink-0" /> {f}
-              </li>
-            ))}
-            <li className="flex items-start gap-3 text-sm font-semibold">
-              <Check className="w-5 h-5 text-[var(--accent)] flex-shrink-0" /> شهران مجاناً مقارنة بالخطة الشهرية
-            </li>
-          </ul>
-          <button
-            onClick={() => handleSubscribe('yearly')}
-            disabled={hydrated && subscription === 'yearly'}
-            className="btn btn-gold w-full py-4 disabled:opacity-50"
-          >
-            {hydrated && subscription === 'yearly' ? 'خطتك الحالية' : 'اشترك سنوياً'}
-          </button>
-        </div>
-      </div>
-
-      <p className="text-center text-sm text-[var(--muted-foreground)] mt-12">
-        الدفع تجريبي حالياً — سيتم ربط Stripe عند الإطلاق الفعلي. تصفح{' '}
-        <Link href="/store" className="text-[var(--accent)] underline">المتجر</Link>{' '}
-        لشراء وصفات فردية.
-      </p>
-    </div>
+      </section>
+    </main>
   );
 }

@@ -1,0 +1,30 @@
+name: QATRA verification
+on:
+  pull_request:
+    paths:
+      - 'brewrecipesproject/**'
+      - '.github/workflows/qatra-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  next-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: brewrecipesproject
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: brewrecipesproject/package-lock.json
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Verify Next.js build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: '1'
