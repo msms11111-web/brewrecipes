@@ -6,6 +6,8 @@ import {
   Sparkles, CircleDot, Thermometer, Clock3, CheckCircle2,
 } from 'lucide-react';
 import SignatureExperience from '../components/SignatureExperience';
+import RecipeCard from '../components/RecipeCard';
+import { getFeaturedRecipes } from '@/lib/recipes';
 
 export const metadata: Metadata = {
   title: 'QATRA Signature | قَطرة — هوية وتجربة القهوة',
@@ -36,7 +38,10 @@ function QatraMark({ className = '' }: { className?: string }) {
   );
 }
 
-export default function SignaturePage() {
+export const dynamic = 'force-dynamic';
+
+export default async function SignaturePage() {
+  const featuredRecipes = await getFeaturedRecipes(3);
   return (
     <main className="sg" dir="rtl">
       <div className="sg-announcement"><span className="sg-announcement-dot" /> A NEW RITUAL FOR SPECIALTY COFFEE <span className="sg-announcement-dot" /></div>
@@ -85,6 +90,18 @@ export default function SignaturePage() {
             <Link href="/store?type=Chemex" className="sg-method sg-method-two"><span>02 — CLARITY</span><div className="sg-method-emblem"><Coffee size={64} strokeWidth={.9}/></div><strong>Chemex</strong><p>صفاء في كل طبقة.</p><ArrowUpLeft size={18}/></Link>
             <Link href="/xbloom" className="sg-method sg-method-three"><span>03 — PRECISION</span><div className="sg-method-emblem"><Orbit size={64} strokeWidth={.9}/></div><strong>xBloom</strong><p>الدقة تلتقي بالابتكار.</p><ArrowUpLeft size={18}/></Link>
           </div>
+        </div>
+      </section>
+
+      <section className="sg-featured" aria-labelledby="sg-featured-title">
+        <div className="sg-container">
+          <div className="sg-section-head">
+            <div><span className="sg-eyebrow">FROM THE BREW LIBRARY</span><h2 id="sg-featured-title">وصفات تستحق التجربة.</h2><p className="sg-featured-intro">وصفات فعلية بمقاديرها وخطواتها، وليست مجرد صور ترويجية.</p></div>
+            <Link href="/store" className="sg-underlink">استكشف كل الوصفات <ArrowUpLeft size={17}/></Link>
+          </div>
+          {featuredRecipes.length ? <div className="sg-featured-grid">
+            {featuredRecipes.map(recipe => <RecipeCard key={recipe.id} recipe={recipe}/>)}
+          </div> : <div className="sg-featured-empty">الوصفات قيد التحديث. يمكنك تصفح البطاقات المصوّرة وأكاديمية التحضير.</div>}
         </div>
       </section>
 
