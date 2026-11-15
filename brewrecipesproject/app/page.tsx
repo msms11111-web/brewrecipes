@@ -1,13 +1,8 @@
-import { getFeaturedRecipes, getAllRecipes } from '@/lib/recipes';
-import HomeClient from './components/HomeClient';
+import SignaturePage from './signature/page';
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home() {
-  const [featured, all] = await Promise.all([
-    getFeaturedRecipes(3),
-    getAllRecipes(),
-  ]);
-
-  return <HomeClient featuredRecipes={featured} allRecipes={all} />;
+/** Qatra Signature is now the primary public experience, not an isolated showroom. */
+export default function Home() {
+  return <SignaturePage />;
 }
